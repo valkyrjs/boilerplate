@@ -1,0 +1,23 @@
+{
+  "name": "@valkyr/relay",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "publish": {
+    "exclude": [
+      ".github",
+      ".vscode",
+      ".gitignore",
+      "tests"
+    ]
+  },
+  "tasks": {
+    "check": "deno check ./mod.ts",
+    "lint": "npx eslint -c eslint.config.mjs .",
+    "test": "deno test --allow-all",
+    "test:publish": "deno publish --dry-run",
+    "ncu": "npx ncu -u -p npm"
+  },
+  "nodeModulesDir": "auto"
+}
