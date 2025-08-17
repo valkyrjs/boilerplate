@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 
 import type { Session } from "~libraries/auth/mod.ts";
+import type { Sockets } from "~libraries/socket/sockets.ts";
 
 export const asyncLocalStorage = new AsyncLocalStorage<{
   session?: Session;
@@ -9,7 +10,7 @@ export const asyncLocalStorage = new AsyncLocalStorage<{
     start: number;
     end?: number;
   };
-  socket?: WebSocket;
+  sockets?: Sockets;
   response: {
     headers: Headers;
   };

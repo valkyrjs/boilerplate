@@ -14,6 +14,7 @@
     "npm:@jsr/valkyr__event-emitter@1": "1.0.1",
     "npm:@jsr/valkyr__event-store@2.0.0-beta.6": "2.0.0-beta.6",
     "npm:@jsr/valkyr__inverse@1": "1.0.1",
+    "npm:@jsr/valkyr__json-rpc@1": "1.1.0",
     "npm:@tailwindcss/vite@4": "4.1.12_vite@7.1.2__picomatch@4.0.3_@types+node@22.15.15",
     "npm:@tanstack/react-query@5": "5.85.3_react@19.1.1",
     "npm:@tanstack/react-router-devtools@1": "1.131.18_@tanstack+react-router@1.131.18__react@19.1.1__react-dom@19.1.1___react@19.1.1_react@19.1.1_react-dom@19.1.1__react@19.1.1",
@@ -566,6 +567,13 @@
     "@jsr/valkyr__inverse@1.0.1": {
       "integrity": "sha512-uZpzPct9FGobgl6H+iR3VJlzZbTFVmJSrB4z5In8zHgIJCkmgYj0diU3soU6MuiKR7SFBfD4PGSuUpTTJHNMlg==",
       "tarball": "https://npm.jsr.io/~/11/@jsr/valkyr__inverse/1.0.1.tgz"
+    },
+    "@jsr/valkyr__json-rpc@1.1.0": {
+      "integrity": "sha512-i1dwWLI29i5mqRvS2NbI3jUyw8uZuO71hJRvT5+sGAexG8RmQJP4N+ETJkxq0RNwNAGGG1bocuzdqnawa2ahIA==",
+      "dependencies": [
+        "@jsr/valkyr__event-emitter"
+      ],
+      "tarball": "https://npm.jsr.io/~/11/@jsr/valkyr__json-rpc/1.1.0.tgz"
     },
     "@jsr/valkyr__testcontainers@2.0.2": {
       "integrity": "sha512-YnmfraYFr3msoUGrIFeElm03nbQqXOaPu0QUT6JI3w6/mIYpVfzPxghkB7gn2RIc81QgrqjwKJE/AL3dltlR1w==",
@@ -2136,6 +2144,7 @@
             "npm:@jsr/valkyr__auth@2",
             "npm:@jsr/valkyr__event-store@2.0.0-beta.6",
             "npm:@jsr/valkyr__inverse@1",
+            "npm:@jsr/valkyr__json-rpc@1",
             "npm:cookie@1",
             "npm:mongodb@6",
             "npm:zod@4"

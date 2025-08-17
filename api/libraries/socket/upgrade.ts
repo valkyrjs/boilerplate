@@ -2,6 +2,7 @@ import { toJsonRpc } from "@valkyr/json-rpc";
 
 import { Session } from "~libraries/auth/mod.ts";
 import { logger } from "~libraries/logger/mod.ts";
+import { asyncLocalStorage } from "~libraries/server/storage.ts";
 
 import { sockets } from "./sockets.ts";
 
@@ -23,35 +24,35 @@ export function upgrade(request: Request, session?: Session) {
       return;
     }
 
-    const body = toJsonRpc(event.data);
+    const message = toJsonRpc(event.data);
 
-    logger.prefix("Socket").info(body);
+    logger.prefix("Socket").info(message);
 
     asyncLocalStorage.run(
       {
         session,
         info: {
-          method: body.method!,
+          method: message.method!,
           start: Date.now(),
         },
-        socket,
+        sockets,
         response: {
           headers: new Headers(),
         },
       },
       async () => {
-        api
-          .handleCommand(body)
-          .then((response) => {
-            if (response !== undefined) {
-              logger.info({ response });
-              socket.send(JSON.stringify(response));
-            }
-          })
-          .catch((error) => {
-            logger.info({ error });
-            socket.send(JSON.stringify(error));
-          });
+        // api
+        //   .send(body)
+        //   .then((response) => {
+        //     if (response !== undefined) {
+        //       logger.info({ response });
+        //       socket.send(JSON.stringify(response));
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     logger.info({ error });
+        //     socket.send(JSON.stringify(error));
+        //   });
       },
     );
   });

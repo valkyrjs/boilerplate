@@ -3,6 +3,7 @@ import z, { ZodObject, ZodRawShape, ZodType } from "zod";
 
 import { ServerError, ServerErrorClass } from "./errors.ts";
 import { Hooks } from "./hooks.ts";
+import { ServerContext } from "./types.ts";
 
 export class Route<const TState extends RouteState = RouteState> {
   readonly type = "route" as const;
@@ -446,9 +447,6 @@ export type RouteMethod = "POST" | "GET" | "PUT" | "PATCH" | "DELETE";
 export type RouteAccess = "public" | "session" | (() => boolean)[];
 
 export type AccessFn = (resource: string, action: string) => () => boolean;
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ServerContext {}
 
 type HandleFn<TArgs extends Array<any> = any[], TResponse = any> = (
   ...args: TArgs
