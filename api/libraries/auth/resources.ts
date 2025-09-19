@@ -3,7 +3,7 @@ import { ResourceRegistry } from "@valkyr/auth";
 export const resources = new ResourceRegistry([
   {
     kind: "account",
-    attributes: {},
+    attr: {},
   },
 ] as const);
 
