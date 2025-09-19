@@ -1,4 +1,4 @@
-import { ServerContext } from "@spec/relay";
+import { ServerContext } from "@platform/relay";
 
 import type { Sockets } from "~libraries/socket/sockets.ts";
 
@@ -7,7 +7,7 @@ import { Session } from "../auth/auth.ts";
 import { Principal } from "../auth/principal.ts";
 import { req } from "./request.ts";
 
-declare module "@spec/relay" {
+declare module "@platform/relay" {
   interface ServerContext {
     /**
      * Current request instance being  handled.

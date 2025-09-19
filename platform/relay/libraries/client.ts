@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import z, { ZodObject, ZodType } from "zod";
+import type { ZodObject, ZodType } from "zod";
 
 import type { RelayAdapter, RelayInput, RelayResponse } from "./adapter.ts";
 import { Route, type Routes } from "./route.ts";
@@ -110,10 +110,10 @@ function getRouteFn(route: Route, { adapter }: Config) {
 
     // ### Fetch
 
-    const response = route.state.content === "json" ? await adapter.json(input) : await adapter.data(input);
+    const response = await adapter.send(input);
 
-    if ("data" in response && route.state.output !== undefined) {
-      response.data = route.state.output.parse(response.data);
+    if ("data" in response && route.state.response !== undefined) {
+      response.data = route.state.response.parse(response.data);
     }
 
     return response;
@@ -179,9 +179,7 @@ type RouteResponse<TRoute extends Route> = Promise<RelayResponse<RouteOutput<TRo
   $response: TRoute["$response"];
 };
 
-type RouteOutput<TRoute extends Route> = TRoute["state"]["output"] extends ZodType
-  ? z.infer<TRoute["state"]["output"]>
-  : null;
+type RouteOutput<TRoute extends Route> = TRoute["state"]["response"] extends ZodType ? TRoute["$response"] : null;
 
 type RouteErrors<TRoute extends Route> = InstanceType<TRoute["state"]["errors"][number]>;
 

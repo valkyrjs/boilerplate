@@ -1,5 +1,5 @@
-import { type Account, fromAccountDocument } from "@spec/schemas/account/account.ts";
-import { PasswordStrategy } from "@spec/schemas/auth/strategies.ts";
+import { Account, fromAccountDocument } from "@platform/models/account.ts";
+import { PasswordStrategy } from "@platform/spec/auth/strategies.ts";
 
 import { db, takeOne } from "./database.ts";
 

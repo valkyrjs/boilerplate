@@ -1,6 +1,5 @@
-import { ForbiddenError } from "@spec/relay/mod.ts";
-import { NotFoundError } from "@spec/relay/mod.ts";
-import { getById } from "@spec/schemas/account/routes.ts";
+import { ForbiddenError, NotFoundError } from "@platform/relay";
+import { getById } from "@platform/spec/account/routes.ts";
 
 import { db } from "~stores/read-store/database.ts";
 

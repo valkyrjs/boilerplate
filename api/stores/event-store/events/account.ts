@@ -1,6 +1,6 @@
-import { RoleSchema } from "@spec/schemas/account/role.ts";
-import { EmailSchema } from "@spec/schemas/email.ts";
-import { NameSchema } from "@spec/schemas/name.ts";
+import { EmailSchema } from "@platform/models/value-objects/email.ts";
+import { NameSchema } from "@platform/models/value-objects/name.ts";
+import { RoleSchema } from "@platform/spec/account/role.ts";
 import { event } from "@valkyr/event-store";
 import z from "zod";
 

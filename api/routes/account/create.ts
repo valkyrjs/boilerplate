@@ -1,5 +1,5 @@
-import { AccountEmailClaimedError } from "@spec/schemas/account/errors.ts";
-import { create } from "@spec/schemas/account/routes.ts";
+import { AccountEmailClaimedError } from "@platform/spec/account/errors.ts";
+import { create } from "@platform/spec/account/routes.ts";
 
 import { Account, isEmailClaimed } from "~stores/event-store/aggregates/account.ts";
 import { eventStore } from "~stores/event-store/event-store.ts";

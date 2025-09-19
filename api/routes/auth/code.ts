@@ -1,4 +1,4 @@
-import { code } from "@spec/schemas/auth/routes.ts";
+import { code } from "@platform/spec/auth/routes.ts";
 import cookie from "cookie";
 
 import { auth, config } from "~libraries/auth/mod.ts";

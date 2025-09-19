@@ -1,7 +1,7 @@
 import { AggregateRoot, getDate } from "@valkyr/event-store";
 
 import { CodeIdentity } from "../events/code.ts";
-import { EventStoreFactory } from "../events/mod.ts";
+import { EventRecord, EventStoreFactory } from "../events/mod.ts";
 
 export class Code extends AggregateRoot<EventStoreFactory> {
   static override readonly name = "code";
@@ -24,7 +24,7 @@ export class Code extends AggregateRoot<EventStoreFactory> {
   // Folder
   // -------------------------------------------------------------------------
 
-  with(event: EventStoreFactory["$events"][number]["$record"]): void {
+  with(event: EventRecord): void {
     switch (event.type) {
       case "code:created": {
         this.value = event.data.value;

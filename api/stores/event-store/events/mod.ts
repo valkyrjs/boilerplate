@@ -1,4 +1,4 @@
-import { EventFactory } from "@valkyr/event-store";
+import { EventFactory, Prettify } from "@valkyr/event-store";
 
 import account from "./account.ts";
 import code from "./code.ts";
@@ -8,3 +8,5 @@ import strategy from "./strategy.ts";
 export const events = new EventFactory([...account, ...code, ...organization, ...strategy]);
 
 export type EventStoreFactory = typeof events;
+
+export type EventRecord = Prettify<EventStoreFactory["$events"][number]["$record"]>;

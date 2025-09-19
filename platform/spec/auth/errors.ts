@@ -1,4 +1,4 @@
-import { BadRequestError } from "@spec/relay";
+import { BadRequestError } from "@platform/relay";
 
 export class AuthenticationStrategyPayloadError extends BadRequestError {
   constructor() {

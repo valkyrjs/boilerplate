@@ -1,17 +1,17 @@
-import { toAccountDocument } from "@spec/schemas/account/account.ts";
-import { Role } from "@spec/schemas/account/role.ts";
-import { Strategy } from "@spec/schemas/account/strategies.ts";
-import { Avatar } from "@spec/schemas/avatar.ts";
-import { Contact } from "@spec/schemas/contact.ts";
-import { Email } from "@spec/schemas/email.ts";
-import { Name } from "@spec/schemas/name.ts";
+import { toAccountDocument } from "@platform/models/account.ts";
+import { Avatar } from "@platform/models/value-objects/avatar.ts";
+import { Contact } from "@platform/models/value-objects/contact.ts";
+import { Email } from "@platform/models/value-objects/email.ts";
+import { Name } from "@platform/models/value-objects/name.ts";
+import { Role } from "@platform/spec/account/role.ts";
+import { Strategy } from "@platform/spec/account/strategies.ts";
 import { AggregateRoot, getDate } from "@valkyr/event-store";
 
 import { db } from "~stores/read-store/database.ts";
 
 import { eventStore } from "../event-store.ts";
 import { Auditor, systemAuditor } from "../events/auditor.ts";
-import { EventStoreFactory } from "../events/mod.ts";
+import { EventRecord, EventStoreFactory } from "../events/mod.ts";
 import { projector } from "../projector.ts";
 
 export class Account extends AggregateRoot<EventStoreFactory> {
@@ -32,11 +32,12 @@ export class Account extends AggregateRoot<EventStoreFactory> {
   // Reducer
   // -------------------------------------------------------------------------
 
-  with(event: EventStoreFactory["$events"][number]["$record"]): void {
+  with(event: EventRecord): void {
     switch (event.type) {
       case "account:created": {
         this.id = event.stream;
         this.createdAt = getDate(event.created);
+        break;
       }
       case "account:avatar:added": {
         this.avatar = { url: event.data };

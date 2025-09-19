@@ -10,7 +10,7 @@ import {
   type ServerErrorResponse,
   UnauthorizedError,
   ZodValidationError,
-} from "@spec/relay";
+} from "@platform/relay";
 import { treeifyError } from "zod";
 
 import { logger } from "~libraries/logger/mod.ts";

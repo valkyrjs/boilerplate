@@ -1,10 +1,10 @@
 {
-  "name": "@spec/schemas",
+  "name": "@platform/models",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "dependencies": {
-    "@spec/relay": "workspace:*",
+    "@platform/spec": "workspace:*",
     "zod": "4"
   }
 }

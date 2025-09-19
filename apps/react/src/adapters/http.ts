@@ -6,8 +6,37 @@ import {
   ServerError,
   type ServerErrorResponse,
   type ServerErrorType,
-} from "@spec/relay";
+} from "@platform/relay";
 
+/**
+ * HttpAdapter provides a unified transport layer for Relay.
+ *
+ * It supports sending JSON objects, nested structures, arrays, and file uploads
+ * via FormData. The adapter automatically detects the payload type and formats
+ * the request accordingly. Responses are normalized into `RelayResponse`.
+ *
+ * @example
+ * ```ts
+ * const adapter = new HttpAdapter({ url: "https://api.example.com" });
+ *
+ * // Sending JSON data
+ * const jsonResponse = await adapter.send({
+ *   method: "POST",
+ *   endpoint: "/users",
+ *   body: { name: "Alice", age: 30 },
+ * });
+ *
+ * // Sending files and nested objects
+ * const formResponse = await adapter.send({
+ *   method: "POST",
+ *   endpoint: "/upload",
+ *   body: {
+ *     user: { name: "Bob", avatar: fileInput.files[0] },
+ *     documents: [fileInput.files[1], fileInput.files[2]],
+ *   },
+ * });
+ * ```
+ */
 export class HttpAdapter implements RelayAdapter {
   /**
    * Instantiate a new HttpAdapter instance.
@@ -39,12 +68,7 @@ export class HttpAdapter implements RelayAdapter {
     return `${this.url}${endpoint}`;
   }
 
-  /**
-   * Send fetch request to the configured endpoint.
-   *
-   * @param input - Relay input parameters to use for the request.
-   */
-  async json({ method, endpoint, query, body, headers = new Headers() }: RelayInput): Promise<RelayResponse> {
+  async send({ method, endpoint, query, body, headers = new Headers() }: RelayInput): Promise<RelayResponse> {
     const init: RequestInit = { method, headers };
 
     // ### Before Request
@@ -53,66 +77,18 @@ export class HttpAdapter implements RelayAdapter {
 
     await this.#beforeRequest(headers);
 
-    // ### Content Type
-    // JSON requests are always of the type 'application/json' and this ensures that
-    // we override any custom pre-hook values for 'content-type' when executing the
-    // request via the 'json' method.
-
-    headers.set("content-type", "application/json");
-
     // ### Body
 
     if (body !== undefined) {
-      init.body = JSON.stringify(body);
-    }
-
-    // ### Response
-
-    return this.request(`${endpoint}${query}`, init);
-  }
-
-  async data({ method, endpoint, query, body, headers = new Headers() }: RelayInput): Promise<RelayResponse> {
-    const init: RequestInit = { method, headers };
-
-    // ### Before Request
-    // If any before request hooks has been defined, we run them here passing in the
-    // request headers for further modification.
-
-    await this.#beforeRequest(headers);
-
-    // ### Content Type
-    // For multipart uploads we let the browser set the correct boundaries.
-
-    headers.delete("content-type");
-
-    // ### Body
-
-    const formData = new FormData();
-
-    if (body !== undefined) {
-      for (const key in body) {
-        const entity = body[key];
-        if (entity === undefined) {
-          continue;
-        }
-        if (Array.isArray(entity)) {
-          const isFileArray = entity.length > 0 && entity.every((candidate) => candidate instanceof File);
-          if (isFileArray) {
-            for (const file of entity) {
-              formData.append(key, file, file.name);
-            }
-          } else {
-            formData.append(key, JSON.stringify(entity));
-          }
-        } else {
-          if (entity instanceof File) {
-            formData.append(key, entity, entity.name);
-          } else {
-            formData.append(key, typeof entity === "string" ? entity : JSON.stringify(entity));
-          }
-        }
+      const type = this.#getRequestFormat(body);
+      if (type === "form-data") {
+        headers.delete("content-type");
+        init.body = this.#getFormData(body);
       }
-      init.body = formData;
+      if (type === "json") {
+        headers.set("content-type", "application/json");
+        init.body = JSON.stringify(body);
+      }
     }
 
     // ### Response
@@ -145,6 +121,52 @@ export class HttpAdapter implements RelayAdapter {
   }
 
   /**
+   * Determine the parser method required for the request.
+   *
+   * @param body - Request body.
+   */
+  #getRequestFormat(body: unknown): "form-data" | "json" {
+    if (containsFile(body) === true) {
+      return "form-data";
+    }
+    return "json";
+  }
+
+  /**
+   * Get FormData instance for the given body.
+   *
+   * @param body - Request body.
+   */
+  #getFormData(data: Record<string, unknown>, formData = new FormData(), parentKey?: string): FormData {
+    for (const key in data) {
+      const value = data[key];
+      if (value === undefined || value === null) continue;
+
+      const formKey = parentKey ? `${parentKey}[${key}]` : key;
+
+      if (value instanceof File) {
+        formData.append(formKey, value, value.name);
+      } else if (Array.isArray(value)) {
+        value.forEach((item, index) => {
+          if (item instanceof File) {
+            formData.append(`${formKey}[${index}]`, item, item.name);
+          } else if (typeof item === "object") {
+            this.#getFormData(item as Record<string, unknown>, formData, `${formKey}[${index}]`);
+          } else {
+            formData.append(`${formKey}[${index}]`, String(item));
+          }
+        });
+      } else if (typeof value === "object") {
+        this.#getFormData(value as Record<string, unknown>, formData, formKey);
+      } else {
+        formData.append(formKey, String(value));
+      }
+    }
+
+    return formData;
+  }
+
+  /**
    * Convert a fetch response to a compliant relay response.
    *
    * @param response - Fetch response to convert.
@@ -159,7 +181,6 @@ export class HttpAdapter implements RelayAdapter {
     if (type === null) {
       return {
         result: "error",
-        headers: response.headers,
         error: {
           status: response.status,
           message: "Missing 'content-type' in header returned from server.",
@@ -174,31 +195,7 @@ export class HttpAdapter implements RelayAdapter {
     if (response.status === 204) {
       return {
         result: "success",
-        headers: response.headers,
         data: null,
-      };
-    }
-
-    // ### SCIM
-    // If the 'content-type' is of type 'scim' we need to convert the SCIM compliant
-    // response to a valid relay response.
-
-    if (type === "application/scim+json") {
-      const parsed = await response.json();
-      if (response.status >= 400) {
-        return {
-          result: "error",
-          headers: response.headers,
-          error: {
-            status: response.status,
-            message: parsed.detail,
-          },
-        };
-      }
-      return {
-        result: "success",
-        headers: response.headers,
-        data: parsed,
       };
     }
 
@@ -211,20 +208,17 @@ export class HttpAdapter implements RelayAdapter {
       if ("data" in parsed) {
         return {
           result: "success",
-          headers: response.headers,
           data: parsed.data,
         };
       }
       if ("error" in parsed) {
         return {
           result: "error",
-          headers: response.headers,
           error: this.#toError(parsed),
         };
       }
       return {
         result: "error",
-        headers: response.headers,
         error: {
           status: response.status,
           message: "Unsupported 'json' body returned from server, missing 'data' or 'error' key.",
@@ -234,7 +228,6 @@ export class HttpAdapter implements RelayAdapter {
 
     return {
       result: "error",
-      headers: response.headers,
       error: {
         status: response.status,
         message: "Unsupported 'content-type' in header returned from server.",
@@ -257,6 +250,19 @@ export class HttpAdapter implements RelayAdapter {
       message: "Unsupported 'error' returned from server.",
     };
   }
+}
+
+function containsFile(value: unknown): boolean {
+  if (value instanceof File) {
+    return true;
+  }
+  if (Array.isArray(value)) {
+    return value.some(containsFile);
+  }
+  if (typeof value === "object" && value !== null) {
+    return Object.values(value).some(containsFile);
+  }
+  return false;
 }
 
 export type HttpAdapterOptions = {

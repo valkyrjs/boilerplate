@@ -1,4 +1,4 @@
-import type { AccountDocument } from "@spec/schemas/account/account.ts";
+import type { AccountDocument } from "@platform/models/account.ts";
 
 import { config } from "~config";
 import { getDatabaseAccessor } from "~libraries/database/accessor.ts";

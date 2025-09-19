@@ -1,4 +1,4 @@
-import { makeClient } from "@spec/relay";
+import { makeClient } from "@platform/relay";
 
 import { HttpAdapter } from "../adapters/http.ts";
 
@@ -9,7 +9,7 @@ export const api = makeClient(
     }),
   },
   {
-    account: (await import("@spec/schemas/account/routes.ts")).routes,
-    auth: (await import("@spec/schemas/auth/routes.ts")).routes,
+    account: (await import("@platform/spec/account/routes.ts")).routes,
+    auth: (await import("@platform/spec/auth/routes.ts")).routes,
   },
 );

@@ -1,4 +1,4 @@
-import { ServerError } from "@spec/relay";
+import { ServerError } from "@platform/relay";
 
 import type { Level } from "../level.ts";
 import { getTracedAt } from "../stack.ts";

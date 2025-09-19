@@ -1,4 +1,4 @@
-import { RoleSchema } from "@spec/schemas/account/role.ts";
+import { RoleSchema } from "@platform/spec/account/role.ts";
 import { PrincipalProvider } from "@valkyr/auth";
 
 import { db } from "~stores/read-store/database.ts";

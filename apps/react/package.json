@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@spec/relay": "workspace:*",
-    "@spec/schemas": "workspace:*",
+    "@platform/relay": "workspace:*",
+    "@platform/spec": "workspace:*",
     "@tanstack/react-query": "5.89.0",
     "@tanstack/react-router": "1.131.47",
     "@valkyr/db": "npm:@jsr/valkyr__db@2.0.0",

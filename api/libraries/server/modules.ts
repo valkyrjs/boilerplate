@@ -1,4 +1,4 @@
-import { Route } from "@spec/relay";
+import { Route } from "@platform/relay";
 
 /**
  * Resolve and return all routes that has been created under any 'routes'

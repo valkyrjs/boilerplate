@@ -1,7 +1,6 @@
-import { route, UnauthorizedError } from "@spec/relay";
+import { AccountSchema } from "@platform/models/account.ts";
+import { route, UnauthorizedError } from "@platform/relay";
 import z from "zod";
-
-import { AccountSchema } from "../account/account.ts";
 
 export * from "./errors.ts";
 export * from "./strategies.ts";

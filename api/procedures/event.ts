@@ -1,4 +1,4 @@
-import { procedure } from "@spec/relay/mod.ts";
+import { procedure } from "@platform/relay";
 import z from "zod";
 
 const EventSchema = z.object({

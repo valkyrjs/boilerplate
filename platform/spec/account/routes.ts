@@ -1,8 +1,8 @@
-import { ForbiddenError, NotFoundError, route, UnauthorizedError } from "@spec/relay";
+import { AccountSchema } from "@platform/models/account.ts";
+import { NameSchema } from "@platform/models/value-objects/name.ts";
+import { ForbiddenError, NotFoundError, route, UnauthorizedError } from "@platform/relay";
 import z from "zod";
 
-import { NameSchema } from "../name.ts";
-import { AccountSchema } from "./account.ts";
 import { AccountEmailClaimedError } from "./errors.ts";
 
 export const create = route

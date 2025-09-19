@@ -4,12 +4,14 @@
   "workspace": [
     "api",
     "apps/react",
-    "spec/relay",
-    "spec/schemas"
+    "platform/models",
+    "platform/relay",
+    "platform/spec"
   ],
   "imports": {
-    "@spec/relay/": "./spec/relay/",
-    "@spec/schemas/": "./spec/schemas/"
+    "@platform/models/": "./platform/models/",
+    "@platform/relay": "./platform/relay/mod.ts",
+    "@platform/spec/": "./platform/spec/"
   },
   "tasks": {
     "start:api": {
@@ -21,7 +23,7 @@
       "description": "Start react application instance."
     },
     "check": {
-      "command": "deno check ./api/server.ts",
+      "command": "deno check ./api/server.ts ./platform",
       "description": "Runs a check on all the projects main entry files."
     },
     "lint": {

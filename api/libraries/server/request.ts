@@ -1,4 +1,4 @@
-import { InternalServerError, UnauthorizedError } from "@spec/relay";
+import { InternalServerError, UnauthorizedError } from "@platform/relay";
 
 import { Session } from "../auth/auth.ts";
 import { storage } from "./storage.ts";

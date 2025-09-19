@@ -1,4 +1,4 @@
-import { email } from "@spec/schemas/auth/routes.ts";
+import { email } from "@platform/spec/auth/routes.ts";
 
 import { logger } from "~libraries/logger/mod.ts";
 import { Account, getAccountEmailRelation } from "~stores/event-store/aggregates/account.ts";

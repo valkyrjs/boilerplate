@@ -1,5 +1,5 @@
-import { BadRequestError } from "@spec/relay";
-import { password as route } from "@spec/schemas/auth/routes.ts";
+import { BadRequestError } from "@platform/relay";
+import { password as route } from "@platform/spec/auth/routes.ts";
 import cookie from "cookie";
 
 import { config } from "~config";

@@ -49,18 +49,11 @@ export type RelayAdapter = {
   getUrl(endpoint: string): string;
 
   /**
-   * Send a 'application/json' request to the configured relay url.
+   * Send a request to the configured relay url.
    *
    * @param input - Request input parameters.
    */
-  json(input: RelayInput): Promise<RelayResponse>;
-
-  /**
-   * Send a form data request to the configured relay url.
-   *
-   * @param input - Request input parameters.
-   */
-  data(input: RelayInput): Promise<RelayResponse>;
+  send(input: RelayInput): Promise<RelayResponse>;
 
   /**
    * Sends a fetch request using the given options and returns a
