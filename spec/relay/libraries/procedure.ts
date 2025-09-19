@@ -1,7 +1,7 @@
 import z, { ZodType } from "zod";
 
 import { ServerError, ServerErrorClass } from "./errors.ts";
-import { Access, ServerContext } from "./types.ts";
+import { RouteAccess, ServerContext } from "./route.ts";
 
 export class Procedure<const TState extends State = State> {
   readonly type = "procedure" as const;
@@ -64,7 +64,7 @@ export class Procedure<const TState extends State = State> {
    *   });
    * ```
    */
-  access<TAccess extends Access>(access: TAccess): Procedure<Omit<TState, "access"> & { access: TAccess }> {
+  access<TAccess extends RouteAccess>(access: TAccess): Procedure<Omit<TState, "access"> & { access: TAccess }> {
     return new Procedure({ ...this.state, access: access as TAccess });
   }
 
@@ -220,7 +220,7 @@ export type Procedures = {
 
 type State = {
   method: string;
-  access?: Access;
+  access?: RouteAccess;
   params?: ZodType;
   errors?: ServerErrorClass[];
   response?: ZodType;

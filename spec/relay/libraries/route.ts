@@ -3,7 +3,6 @@ import z, { ZodObject, ZodRawShape, ZodType } from "zod";
 
 import { ServerError, ServerErrorClass } from "./errors.ts";
 import { Hooks } from "./hooks.ts";
-import { ServerContext } from "./types.ts";
 
 export class Route<const TState extends RouteState = RouteState> {
   readonly type = "route" as const;
@@ -81,7 +80,7 @@ export class Route<const TState extends RouteState = RouteState> {
    * route.post("/foo").meta({ description: "Super route" });
    * ```
    */
-  meta<TRouteMeta extends RouteMeta>(meta: TRouteMeta): Route<Omit<TState, "meta"> & { meta: TRouteMeta }> {
+  meta<TRouteMeta extends RouteMeta>(meta: TRouteMeta): Route<Prettify<Omit<TState, "meta"> & { meta: TRouteMeta }>> {
     return new Route({ ...this.state, meta });
   }
 
@@ -134,7 +133,7 @@ export class Route<const TState extends RouteState = RouteState> {
    *   });
    * ```
    */
-  access<TAccess extends RouteAccess>(access: TAccess): Route<Omit<TState, "access"> & { access: TAccess }> {
+  access<TAccess extends RouteAccess>(access: TAccess): Route<Prettify<Omit<TState, "access"> & { access: TAccess }>> {
     return new Route({ ...this.state, access: access as TAccess });
   }
 
@@ -157,7 +156,9 @@ export class Route<const TState extends RouteState = RouteState> {
    *   });
    * ```
    */
-  params<TParams extends ZodRawShape>(params: TParams): Route<Omit<TState, "params"> & { params: ZodObject<TParams> }> {
+  params<TParams extends ZodRawShape>(
+    params: TParams,
+  ): Route<Prettify<Omit<TState, "params"> & { params: ZodObject<TParams> }>> {
     return new Route({ ...this.state, params: z.object(params) as any });
   }
 
@@ -180,7 +181,9 @@ export class Route<const TState extends RouteState = RouteState> {
    *   });
    * ```
    */
-  query<TQuery extends ZodRawShape>(query: TQuery): Route<Omit<TState, "search"> & { query: ZodObject<TQuery> }> {
+  query<TQuery extends ZodRawShape>(
+    query: TQuery,
+  ): Route<Prettify<Omit<TState, "search"> & { query: ZodObject<TQuery> }>> {
     return new Route({ ...this.state, query: z.object(query) as any });
   }
 
@@ -205,7 +208,7 @@ export class Route<const TState extends RouteState = RouteState> {
    *   });
    * ```
    */
-  body<TBody extends ZodType>(body: TBody): Route<Omit<TState, "body"> & { body: TBody }> {
+  body<TBody extends ZodType>(body: TBody): Route<Prettify<Omit<TState, "body"> & { body: TBody }>> {
     return new Route({ ...this.state, body });
   }
 
@@ -227,7 +230,9 @@ export class Route<const TState extends RouteState = RouteState> {
    *   });
    * ```
    */
-  errors<TErrors extends ServerErrorClass[]>(errors: TErrors): Route<Omit<TState, "errors"> & { errors: TErrors }> {
+  errors<TErrors extends ServerErrorClass[]>(
+    errors: TErrors,
+  ): Route<Prettify<Omit<TState, "errors"> & { errors: TErrors }>> {
     return new Route({ ...this.state, errors });
   }
 
@@ -254,7 +259,9 @@ export class Route<const TState extends RouteState = RouteState> {
    *   });
    * ```
    */
-  response<TResponse extends ZodType>(response: TResponse): Route<Omit<TState, "response"> & { response: TResponse }> {
+  response<TResponse extends ZodType>(
+    response: TResponse,
+  ): Route<Prettify<Omit<TState, "response"> & { response: TResponse }>> {
     return new Route({ ...this.state, response });
   }
 
@@ -292,7 +299,7 @@ export class Route<const TState extends RouteState = RouteState> {
    *
    * @param hooks - Hooks to register with the route.
    */
-  hooks<THooks extends Hooks>(hooks: THooks): Route<Omit<TState, "hooks"> & { hooks: THooks }> {
+  hooks<THooks extends Hooks>(hooks: THooks): Route<Prettify<Omit<TState, "hooks"> & { hooks: THooks }>> {
     return new Route({ ...this.state, hooks });
   }
 }
@@ -444,9 +451,10 @@ export type RouteMeta = {
 
 export type RouteMethod = "POST" | "GET" | "PUT" | "PATCH" | "DELETE";
 
-export type RouteAccess = "public" | "session" | (() => boolean)[];
+export type RouteAccess = "public" | "authenticated";
 
-export type AccessFn = (resource: string, action: string) => () => boolean;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface ServerContext {}
 
 type HandleFn<TArgs extends Array<any> = any[], TResponse = any> = (
   ...args: TArgs
@@ -471,3 +479,7 @@ type HasInputArgs<TState extends RouteState> = TState["params"] extends ZodObjec
     : TState["body"] extends ZodType
       ? true
       : false;
+
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};

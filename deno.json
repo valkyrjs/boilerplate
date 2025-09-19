@@ -21,7 +21,7 @@
       "description": "Start react application instance."
     },
     "check": {
-      "command": "deno check ./mod.ts",
+      "command": "deno check ./api/server.ts",
       "description": "Runs a check on all the projects main entry files."
     },
     "lint": {

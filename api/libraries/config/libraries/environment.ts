@@ -11,9 +11,9 @@ const env = await load();
  * @param key   - Environment key to resolve.
  * @param parse - Parser function to convert the value to the desired type. Default: `string`.
  */
-export function getEnvironmentVariable(key: string, fallback?: string): string;
-export function getEnvironmentVariable<T extends Parser>(key: string, parse: T, fallback?: string): ReturnType<T>;
-export function getEnvironmentVariable<T extends Parser>(key: string, parse?: T, fallback?: string): ReturnType<T> {
+export function getEnvironmentVariable(key: string, fallback?: any): string;
+export function getEnvironmentVariable<T extends Parser>(key: string, parse: T, fallback?: any): ReturnType<T>;
+export function getEnvironmentVariable<T extends Parser>(key: string, parse?: T, fallback?: any): ReturnType<T> {
   if (typeof parse === "string") {
     fallback = parse;
     parse = undefined;
@@ -25,7 +25,7 @@ export function getEnvironmentVariable<T extends Parser>(key: string, parse?: T,
     }
     throw new Error(`Config Exception: Missing ${key} variable in configuration`);
   }
-  return parse ? parse(value) : toString(value);
+  return parse ? parse(value) : (toString(value) as any);
 }
 
 /**

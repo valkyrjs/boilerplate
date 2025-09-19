@@ -2,7 +2,9 @@ import { ServerContext } from "@spec/relay";
 
 import type { Sockets } from "~libraries/socket/sockets.ts";
 
+import { Access } from "../auth/access.ts";
 import { Session } from "../auth/auth.ts";
+import { Principal } from "../auth/principal.ts";
 import { req } from "./request.ts";
 
 declare module "@spec/relay" {
@@ -18,15 +20,19 @@ declare module "@spec/relay" {
     isAuthenticated: boolean;
 
     /**
-     * Get account id from session, throws an error if the request
-     * does not have a valid session.
-     */
-    accountId: string;
-
-    /**
      * Get request session instance.
      */
     session: Session;
+
+    /**
+     * Get request principal.
+     */
+    principal: Principal;
+
+    /**
+     * Get access control session.
+     */
+    access: Access;
 
     /**
      * Sockets instance attached to the server.
@@ -43,12 +49,16 @@ export function getRequestContext(request: Request): ServerContext {
       return req.isAuthenticated;
     },
 
-    get accountId() {
-      return this.session.accountId;
-    },
-
     get session(): Session {
       return req.session;
+    },
+
+    get principal(): Principal {
+      return req.session.principal;
+    },
+
+    get access(): Access {
+      return req.session.access;
     },
 
     get sockets(): Sockets {

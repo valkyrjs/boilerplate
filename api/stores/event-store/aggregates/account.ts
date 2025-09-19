@@ -1,4 +1,5 @@
 import { toAccountDocument } from "@spec/schemas/account/account.ts";
+import { Role } from "@spec/schemas/account/role.ts";
 import { Strategy } from "@spec/schemas/account/strategies.ts";
 import { Avatar } from "@spec/schemas/avatar.ts";
 import { Contact } from "@spec/schemas/contact.ts";
@@ -22,6 +23,7 @@ export class Account extends AggregateRoot<EventStoreFactory> {
     emails: [],
   };
   strategies: Strategy[] = [];
+  roles: Role[] = [];
 
   createdAt!: Date;
   updatedAt!: Date;
@@ -48,6 +50,11 @@ export class Account extends AggregateRoot<EventStoreFactory> {
       }
       case "account:email:added": {
         this.contact.emails.push(event.data);
+        this.updatedAt = getDate(event.created);
+        break;
+      }
+      case "account:role:added": {
+        this.roles.push(event.data);
         this.updatedAt = getDate(event.created);
         break;
       }
@@ -103,11 +110,11 @@ export class Account extends AggregateRoot<EventStoreFactory> {
     });
   }
 
-  addRole(roleId: string, meta: Auditor = systemAuditor): this {
+  addRole(role: Role, meta: Auditor = systemAuditor): this {
     return this.push({
       stream: this.id,
       type: "account:role:added",
-      data: roleId,
+      data: role,
       meta,
     });
   }
@@ -194,8 +201,8 @@ projector.on("account:email:added", async ({ stream: id, data: email }) => {
   await db.collection("accounts").updateOne({ id }, { $push: { "contact.emails": email } });
 });
 
-projector.on("account:role:added", async ({ stream: id, data: roleId }) => {
-  await db.collection("accounts").updateOne({ id }, { $push: { roles: roleId } });
+projector.on("account:role:added", async ({ stream: id, data: role }) => {
+  await db.collection("accounts").updateOne({ id }, { $push: { roles: role } });
 });
 
 projector.on("strategy:email:added", async ({ stream: id, data: email }) => {

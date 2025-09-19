@@ -1,4 +1,18 @@
 services:
+  cerbos:
+    container_name: cerbos
+    image: ghcr.io/cerbos/cerbos:latest
+    command: ["server", "--config=/config.yaml"]   # <--- ensure config is used
+    ports:
+      - "3592:3592"
+      - "3593:3593"
+      - "3594:3594"
+    volumes:
+      - ./cerbos/config.yaml:/config.yaml          # <--- mount config
+      - ./cerbos/policies:/data/policies           # <--- mount policies
+    networks:
+      - localdev
+
   mongo:
     image: mongo:8
     restart: unless-stopped

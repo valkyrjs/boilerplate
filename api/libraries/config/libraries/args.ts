@@ -2,9 +2,9 @@ import { parseArgs } from "@std/cli";
 
 import { Parser, toString } from "./parsers.ts";
 
-export function getArgsVariable(key: string, fallback?: string): string;
-export function getArgsVariable<T extends Parser>(key: string, parse: T, fallback?: string): ReturnType<T>;
-export function getArgsVariable<T extends Parser>(key: string, parse?: T, fallback?: string): ReturnType<T> {
+export function getArgsVariable(key: string, fallback?: any): string;
+export function getArgsVariable<T extends Parser>(key: string, parse: T, fallback?: any): ReturnType<T>;
+export function getArgsVariable<T extends Parser>(key: string, parse?: T, fallback?: any): ReturnType<T> {
   if (typeof parse === "string") {
     fallback = parse;
     parse = undefined;
@@ -17,5 +17,5 @@ export function getArgsVariable<T extends Parser>(key: string, parse?: T, fallba
     }
     throw new Error(`Config Exception: Missing ${key} variable in arguments`);
   }
-  return parse ? parse(value) : toString(value);
+  return parse ? parse(value) : (toString(value) as any);
 }

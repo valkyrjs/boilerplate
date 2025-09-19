@@ -1,11 +1,11 @@
 import { InternalServerError, UnauthorizedError } from "@spec/relay";
 
 import { Session } from "../auth/auth.ts";
-import { asyncLocalStorage } from "./storage.ts";
+import { storage } from "./storage.ts";
 
 export const req = {
   get store() {
-    const store = asyncLocalStorage.getStore();
+    const store = storage.getStore();
     if (store === undefined) {
       throw new InternalServerError("AsyncLocalStorage not defined.");
     }
@@ -55,7 +55,7 @@ export const req = {
    * Typically used when utility functions might run in and out of request scope.
    */
   getStore() {
-    return asyncLocalStorage.getStore();
+    return storage.getStore();
   },
 } as const;
 

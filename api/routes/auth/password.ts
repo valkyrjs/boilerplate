@@ -8,7 +8,7 @@ import { password } from "~libraries/crypto/mod.ts";
 import { logger } from "~libraries/logger/mod.ts";
 import { getPasswordStrategyByAlias } from "~stores/read-store/methods.ts";
 
-export default route.handle(async ({ body: { alias, password: userPassword } }) => {
+export default route.access("public").handle(async ({ body: { alias, password: userPassword } }) => {
   const strategy = await getPasswordStrategyByAlias(alias);
   if (strategy === undefined) {
     return logger.info({
@@ -28,7 +28,7 @@ export default route.handle(async ({ body: { alias, password: userPassword } }) 
     headers: {
       "set-cookie": cookie.serialize(
         "token",
-        await auth.generate({ accountId: strategy.accountId }, "1 week"),
+        await auth.generate({ id: strategy.accountId }, "1 week"),
         config.cookie(1000 * 60 * 60 * 24 * 7),
       ),
     },

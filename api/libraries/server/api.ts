@@ -166,7 +166,7 @@ export class Api {
       );
     }
 
-    if (route.state.access === "session" && req.isAuthenticated === false) {
+    if (route.state.access === "authenticated" && req.isAuthenticated === false) {
       return toResponse(new UnauthorizedError(), request);
     }
 

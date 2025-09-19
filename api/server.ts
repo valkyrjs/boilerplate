@@ -3,7 +3,7 @@ import cookie from "cookie";
 
 import { auth, type Session } from "~libraries/auth/mod.ts";
 import { logger } from "~libraries/logger/mod.ts";
-import { asyncLocalStorage } from "~libraries/server/mod.ts";
+import { type Storage, storage } from "~libraries/server/mod.ts";
 import { Api, resolveRoutes } from "~libraries/server/mod.ts";
 
 import { config } from "./config.ts";
@@ -45,8 +45,6 @@ Deno.serve(
   async (request) => {
     const url = new URL(request.url);
 
-    // ### Session
-
     let session: Session | undefined;
 
     const token = cookie.parse(request.headers.get("cookie") ?? "").token;
@@ -63,31 +61,23 @@ Deno.serve(
       session = resolved;
     }
 
-    // ### Headers
-    // Set the default headers.
-
-    const headers = new Headers();
-
-    // ### Handle
-
-    const ts = performance.now();
-
-    return asyncLocalStorage.run(
-      {
-        session,
-        info: {
-          method: request.url,
-          start: Date.now(),
-        },
-        response: {
-          headers,
-        },
+    const context = {
+      session,
+      info: {
+        method: request.url,
+        start: Date.now(),
       },
-      async () => {
-        return api.fetch(request).finally(() => {
-          log.info(`${request.method} ${url.pathname} [${((performance.now() - ts) / 1000).toLocaleString()} seconds]`);
-        });
+      response: {
+        headers: new Headers(),
       },
-    );
+    } satisfies Storage;
+
+    return storage.run(context, async () => {
+      return api.fetch(request).finally(() => {
+        log.info(
+          `${request.method} ${url.pathname} [${((Date.now() - context.info.start) / 1000).toLocaleString()} seconds]`,
+        );
+      });
+    });
   },
 );

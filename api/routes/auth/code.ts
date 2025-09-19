@@ -70,7 +70,7 @@ export default code.access("public").handle(async ({ params: { accountId, codeId
       status: 302,
       headers: {
         location: next,
-        "set-cookie": cookie.serialize("token", await auth.generate({ accountId: account.id }, "1 week"), options),
+        "set-cookie": cookie.serialize("token", await auth.generate({ id: account.id }, "1 week"), options),
       },
     });
   }
@@ -78,7 +78,7 @@ export default code.access("public").handle(async ({ params: { accountId, codeId
   return new Response(null, {
     status: 200,
     headers: {
-      "set-cookie": cookie.serialize("token", await auth.generate({ accountId: account.id }, "1 week"), options),
+      "set-cookie": cookie.serialize("token", await auth.generate({ id: account.id }, "1 week"), options),
     },
   });
 });

@@ -13,6 +13,7 @@ export default create.access("public").handle(async ({ body: { name, email } }) 
     .create()
     .addName(name)
     .addEmailStrategy(email)
+    .addRole("user")
     .save()
     .then((account) => account.id);
 });
