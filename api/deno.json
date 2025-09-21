@@ -1,7 +1,0 @@
-{
-  "imports": {
-    "~libraries/": "./libraries/",
-    "~stores/": "./stores/",
-    "~config": "./config.ts"
-  }
-}

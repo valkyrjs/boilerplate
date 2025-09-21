@@ -1,9 +1,12 @@
-import { config as auth } from "~libraries/auth/config.ts";
-import { getEnvironmentVariable, toNumber } from "~libraries/config/mod.ts";
+import { getEnvironmentVariable } from "@platform/config/environment.ts";
+import z from "zod";
 
 export const config = {
-  name: "valkyr",
-  host: getEnvironmentVariable("API_HOST", "0.0.0.0"),
-  port: getEnvironmentVariable("API_PORT", toNumber, "8370"),
-  ...auth,
+  name: "@valkyr/boilerplate",
+  host: getEnvironmentVariable({ key: "API_HOST", type: z.ipv4(), fallback: "0.0.0.0" }),
+  port: getEnvironmentVariable({
+    key: "API_PORT",
+    type: z.coerce.number(),
+    fallback: "8370",
+  }),
 };

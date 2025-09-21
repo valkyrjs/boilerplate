@@ -1,7 +1,8 @@
 import z, { ZodType } from "zod";
 
+import { ServerContext } from "./context.ts";
 import { ServerError, ServerErrorClass } from "./errors.ts";
-import { RouteAccess, ServerContext } from "./route.ts";
+import { RouteAccess } from "./route.ts";
 
 export class Procedure<const TState extends State = State> {
   readonly type = "procedure" as const;

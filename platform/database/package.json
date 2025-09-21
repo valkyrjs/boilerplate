@@ -1,0 +1,12 @@
+{
+  "name": "@platform/database",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@platform/config": "workspace:*",
+    "@valkyr/inverse": "npm:@jsr/valkyr__inverse@1.0.1",
+    "mongodb": "6.20.0",
+    "zod": "4.1.11"
+  }
+}

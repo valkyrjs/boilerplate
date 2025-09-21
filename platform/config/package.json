@@ -1,0 +1,10 @@
+{
+  "name": "@platform/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@std/dotenv": "npm:@jsr/std__dotenv@0.225.5",
+    "zod": "4.1.11"
+  }
+}

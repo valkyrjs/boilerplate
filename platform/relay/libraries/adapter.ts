@@ -11,6 +11,7 @@ import type { RouteMethod } from "./route.ts";
 
 const ServerErrorResponseSchema = z.object({
   error: z.object({
+    code: z.any(),
     status: z.number(),
     message: z.string(),
     data: z.any().optional(),
@@ -51,9 +52,10 @@ export type RelayAdapter = {
   /**
    * Send a request to the configured relay url.
    *
-   * @param input - Request input parameters.
+   * @param input     - Request input parameters.
+   * @param publicKey - Key to encrypt the payload with.
    */
-  send(input: RelayInput): Promise<RelayResponse>;
+  send(input: RelayInput, publicKey?: string): Promise<RelayResponse>;
 
   /**
    * Sends a fetch request using the given options and returns a
@@ -75,10 +77,12 @@ export type RelayInput = {
 export type RelayResponse<TData = unknown, TError = ServerErrorType | ServerErrorResponse["error"]> =
   | {
       result: "success";
+      headers: Headers;
       data: TData;
     }
   | {
       result: "error";
+      headers: Headers;
       error: TError;
     };
 

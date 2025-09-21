@@ -1,0 +1,10 @@
+{
+  "name": "@platform/cerbos",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@cerbos/http": "0.23.1",
+    "@valkyr/auth": "npm:@jsr/valkyr__auth@2.1.4"
+  }
+}

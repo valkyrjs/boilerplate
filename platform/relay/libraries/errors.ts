@@ -1,6 +1,8 @@
-import type { $ZodErrorTree } from "zod/v4/core";
+import { ZodError } from "zod";
 
 export abstract class ServerError<TData = unknown> extends Error {
+  abstract readonly code: string;
+
   constructor(
     message: string,
     readonly status: number,
@@ -12,40 +14,40 @@ export abstract class ServerError<TData = unknown> extends Error {
   /**
    * Converts a server delivered JSON error to its native instance.
    *
-   * @param value - Error JSON.
+   * @param error - Error JSON.
    */
-  static fromJSON(value: ServerErrorJSON): ServerErrorType {
-    switch (value.status) {
-      case 400:
-        return new BadRequestError(value.message, value.data);
-      case 401:
-        return new UnauthorizedError(value.message, value.data);
-      case 403:
-        return new ForbiddenError(value.message, value.data);
-      case 404:
-        return new NotFoundError(value.message, value.data);
-      case 405:
-        return new MethodNotAllowedError(value.message, value.data);
-      case 406:
-        return new NotAcceptableError(value.message, value.data);
-      case 409:
-        return new ConflictError(value.message, value.data);
-      case 410:
-        return new GoneError(value.message, value.data);
-      case 415:
-        return new UnsupportedMediaTypeError(value.message, value.data);
-      case 422:
-        return new UnprocessableContentError(value.message, value.data);
-      case 432:
-        return new ZodValidationError(value.message, value.data);
-      case 500:
-        return new InternalServerError(value.message, value.data);
-      case 501:
-        return new NotImplementedError(value.message, value.data);
-      case 503:
-        return new ServiceUnavailableError(value.message, value.data);
+  static fromJSON(error: ServerErrorJSON): ServerErrorType {
+    switch (error.code) {
+      case "BAD_REQUEST":
+        return new BadRequestError(error.message, error.data);
+      case "UNAUTHORIZED":
+        return new UnauthorizedError(error.message, error.data);
+      case "FORBIDDEN":
+        return new ForbiddenError(error.message, error.data);
+      case "NOT_FOUND":
+        return new NotFoundError(error.message, error.data);
+      case "METHOD_NOT_ALLOWED":
+        return new MethodNotAllowedError(error.message, error.data);
+      case "NOT_ACCEPTABLE":
+        return new NotAcceptableError(error.message, error.data);
+      case "CONFLICT":
+        return new ConflictError(error.message, error.data);
+      case "GONE":
+        return new GoneError(error.message, error.data);
+      case "UNSUPPORTED_MEDIA_TYPE":
+        return new UnsupportedMediaTypeError(error.message, error.data);
+      case "UNPROCESSABLE_CONTENT":
+        return new UnprocessableContentError(error.message, error.data);
+      case "VALIDATION":
+        return new ValidationError(error.message, error.data);
+      case "INTERNAL_SERVER":
+        return new InternalServerError(error.message, error.data);
+      case "NOT_IMPLEMENTED":
+        return new NotImplementedError(error.message, error.data);
+      case "SERVICE_UNAVAILABLE":
+        return new ServiceUnavailableError(error.message, error.data);
       default:
-        return new InternalServerError(value.message, value.data);
+        return new InternalServerError(error.message, error.data);
     }
   }
 
@@ -54,7 +56,7 @@ export abstract class ServerError<TData = unknown> extends Error {
    */
   toJSON(): ServerErrorJSON {
     return {
-      type: "relay",
+      code: this.code as ServerErrorJSON["code"],
       status: this.status,
       message: this.message,
       data: this.data,
@@ -63,6 +65,8 @@ export abstract class ServerError<TData = unknown> extends Error {
 }
 
 export class BadRequestError<TData = unknown> extends ServerError<TData> {
+  readonly code = "BAD_REQUEST";
+
   /**
    * Instantiate a new BadRequestError.
    *
@@ -70,6 +74,7 @@ export class BadRequestError<TData = unknown> extends ServerError<TData> {
    * cannot or will not process the request due to something that is perceived to
    * be a client error.
    *
+   * @param message - the message that describes the error. Default: "Bad Request".
    * @param data - Optional data to send with the error.
    */
   constructor(message = "Bad Request", data?: TData) {
@@ -78,6 +83,8 @@ export class BadRequestError<TData = unknown> extends ServerError<TData> {
 }
 
 export class UnauthorizedError<TData = unknown> extends ServerError<TData> {
+  readonly code = "UNAUTHORIZED";
+
   /**
    * Instantiate a new UnauthorizedError.
    *
@@ -104,6 +111,8 @@ export class UnauthorizedError<TData = unknown> extends ServerError<TData> {
 }
 
 export class ForbiddenError<TData = unknown> extends ServerError<TData> {
+  readonly code = "FORBIDDEN";
+
   /**
    * Instantiate a new ForbiddenError.
    *
@@ -125,6 +134,8 @@ export class ForbiddenError<TData = unknown> extends ServerError<TData> {
 }
 
 export class NotFoundError<TData = unknown> extends ServerError<TData> {
+  readonly code = "NOT_FOUND";
+
   /**
    * Instantiate a new NotFoundError.
    *
@@ -147,6 +158,8 @@ export class NotFoundError<TData = unknown> extends ServerError<TData> {
 }
 
 export class MethodNotAllowedError<TData = unknown> extends ServerError<TData> {
+  readonly code = "METHOD_NOT_ALLOWED";
+
   /**
    * Instantiate a new MethodNotAllowedError.
    *
@@ -164,6 +177,8 @@ export class MethodNotAllowedError<TData = unknown> extends ServerError<TData> {
 }
 
 export class NotAcceptableError<TData = unknown> extends ServerError<TData> {
+  readonly code = "NOT_ACCEPTABLE";
+
   /**
    * Instantiate a new NotAcceptableError.
    *
@@ -181,6 +196,8 @@ export class NotAcceptableError<TData = unknown> extends ServerError<TData> {
 }
 
 export class ConflictError<TData = unknown> extends ServerError<TData> {
+  readonly code = "CONFLICT";
+
   /**
    * Instantiate a new ConflictError.
    *
@@ -202,6 +219,8 @@ export class ConflictError<TData = unknown> extends ServerError<TData> {
 }
 
 export class GoneError<TData = unknown> extends ServerError<TData> {
+  readonly code = "GONE";
+
   /**
    * Instantiate a new GoneError.
    *
@@ -225,6 +244,8 @@ export class GoneError<TData = unknown> extends ServerError<TData> {
 }
 
 export class UnsupportedMediaTypeError<TData = unknown> extends ServerError<TData> {
+  readonly code = "UNSUPPORTED_MEDIA_TYPE";
+
   /**
    * Instantiate a new UnsupportedMediaTypeError.
    *
@@ -242,6 +263,8 @@ export class UnsupportedMediaTypeError<TData = unknown> extends ServerError<TDat
 }
 
 export class UnprocessableContentError<TData = unknown> extends ServerError<TData> {
+  readonly code = "UNPROCESSABLE_CONTENT";
+
   /**
    * Instantiate a new UnprocessableContentError.
    *
@@ -263,22 +286,49 @@ export class UnprocessableContentError<TData = unknown> extends ServerError<TDat
   }
 }
 
-export class ZodValidationError<TData extends $ZodErrorTree<any, any>> extends ServerError<TData> {
+export class ValidationError extends ServerError<ValidationErrorData> {
+  readonly code = "VALIDATION";
+
   /**
-   * Instantiate a new ZodValidationError.
+   * Instantiate a new ValidationError.
    *
-   * This indicates that the server understood the request body, but the structure
-   * failed validation against the expected schema.
+   * This indicates that the server understood the request, but the content
+   * failed semantic validation against the expected schema.
    *
-   * @param message - Optional message to send with the error. Default: "Unprocessable Content".
-   * @param data    - ZodError instance to pass through.
+   * @param message - Optional message to send with the error. Default: "Validation Failed".
+   * @param data    - Data with validation failure details.
    */
-  constructor(message: string, data: TData) {
-    super(message, 432, data);
+  constructor(message = "Validation Failed", data: ValidationErrorData) {
+    super(message, 422, data);
+  }
+
+  /**
+   * Instantiate a new ValidationError.
+   *
+   * This indicates that the server understood the request, but the content
+   * failed semantic validation against the expected schema.
+   *
+   * @param zodError - The original ZodError instance.
+   * @param source   - The source of the validation error.
+   * @param message  - Optional override for the main error message.
+   */
+  static fromZod(zodError: ZodError, source: ErrorSource, message?: string) {
+    return new ValidationError(message, {
+      details: zodError.issues.map((issue) => {
+        return {
+          source: source,
+          code: issue.code,
+          field: issue.path.join("."),
+          message: issue.message,
+        };
+      }),
+    });
   }
 }
 
 export class InternalServerError<TData = unknown> extends ServerError<TData> {
+  readonly code = "INTERNAL_SERVER";
+
   /**
    * Instantiate a new InternalServerError.
    *
@@ -302,6 +352,8 @@ export class InternalServerError<TData = unknown> extends ServerError<TData> {
 }
 
 export class NotImplementedError<TData = unknown> extends ServerError<TData> {
+  readonly code = "NOT_IMPLEMENTED";
+
   /**
    * Instantiate a new NotImplementedError.
    *
@@ -319,6 +371,8 @@ export class NotImplementedError<TData = unknown> extends ServerError<TData> {
 }
 
 export class ServiceUnavailableError<TData = unknown> extends ServerError<TData> {
+  readonly code = "SERVICE_UNAVAILABLE";
+
   /**
    * Instantiate a new ServiceUnavailableError.
    *
@@ -338,14 +392,20 @@ export class ServiceUnavailableError<TData = unknown> extends ServerError<TData>
   }
 }
 
-export type ServerErrorClass<TData = unknown> = typeof ServerError<TData>;
+/*
+ |--------------------------------------------------------------------------------
+ | Types
+ |--------------------------------------------------------------------------------
+ */
 
 export type ServerErrorJSON = {
-  type: "relay";
+  code: ServerErrorType["code"];
   status: number;
   message: string;
   data?: any;
 };
+
+export type ServerErrorClass<TData = unknown> = typeof ServerError<TData>;
 
 export type ServerErrorType =
   | BadRequestError
@@ -360,4 +420,18 @@ export type ServerErrorType =
   | UnprocessableContentError
   | NotImplementedError
   | ServiceUnavailableError
+  | ValidationError
   | InternalServerError;
+
+export type ErrorSource = "body" | "query" | "params" | "client";
+
+type ValidationErrorData = {
+  details: ValidationErrorDetail[];
+};
+
+type ValidationErrorDetail = {
+  source: ErrorSource;
+  code: string;
+  field: string;
+  message: string;
+};

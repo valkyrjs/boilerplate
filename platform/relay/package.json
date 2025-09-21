@@ -8,7 +8,11 @@
     ".": "./mod.ts"
   },
   "dependencies": {
+    "@platform/auth": "workspace:*",
+    "@platform/socket": "workspace:*",
+    "@platform/vault": "workspace:*",
+    "@valkyr/auth": "npm:@jsr/valkyr__auth@2.1.4",
     "path-to-regexp": "8",
-    "zod": "4"
+    "zod": "4.1.11"
   }
 }

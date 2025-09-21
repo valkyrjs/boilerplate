@@ -110,7 +110,7 @@ function getRouteFn(route: Route, { adapter }: Config) {
 
     // ### Fetch
 
-    const response = await adapter.send(input);
+    const response = await adapter.send(input, route.state.crypto?.publicKey);
 
     if ("data" in response && route.state.response !== undefined) {
       response.data = route.state.response.parse(response.data);

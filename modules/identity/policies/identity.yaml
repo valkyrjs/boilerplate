@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# docs: https://docs.cerbos.dev/cerbos/latest/policies/resource_policies
+
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: identity
+  version: default
+  rules:
+
+    ### Read
+
+    - actions:
+        - read
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+
+    - actions:
+        - read
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+      condition:
+        match:
+          expr: request.resource.id == request.principal.id
+
+    ### Update
+
+    - actions:
+        - update
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+      condition:
+        match:
+          expr: request.resource.id == request.principal.id
+
+    ### Delete
+    
+    - actions:
+        - delete
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+      condition:
+        match:
+          expr: request.resource.id == request.principal.id

@@ -1,6 +1,7 @@
 import { match, type MatchFunction } from "path-to-regexp";
 import z, { ZodObject, ZodRawShape, ZodType } from "zod";
 
+import { ServerContext } from "./context.ts";
 import { ServerError, ServerErrorClass } from "./errors.ts";
 import { Hooks } from "./hooks.ts";
 
@@ -82,6 +83,23 @@ export class Route<const TState extends RouteState = RouteState> {
    */
   meta<TRouteMeta extends RouteMeta>(meta: TRouteMeta): Route<Prettify<Omit<TState, "meta"> & { meta: TRouteMeta }>> {
     return new Route({ ...this.state, meta });
+  }
+
+  /**
+   * Set cryptographic keys used to resolve cryptographic requests.
+   *
+   * @param crypto - Crypto configuration object.
+   *
+   * @examples
+   *
+   * ```ts
+   * route.post("/foo").crypto({ publicKey: "..." });
+   * ```
+   */
+  crypto<TCrypto extends { publicKey: string }>(
+    crypto: TCrypto,
+  ): Route<Prettify<Omit<TState, "crypto"> & { crypto: TCrypto }>> {
+    return new Route({ ...this.state, crypto });
   }
 
   /**
@@ -431,6 +449,9 @@ export type Routes = {
 type RouteState = {
   method: RouteMethod;
   path: string;
+  crypto?: {
+    publicKey: string;
+  };
   meta?: RouteMeta;
   access?: RouteAccess;
   params?: ZodObject;
@@ -451,10 +472,7 @@ export type RouteMeta = {
 
 export type RouteMethod = "POST" | "GET" | "PUT" | "PATCH" | "DELETE";
 
-export type RouteAccess = "public" | "authenticated";
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ServerContext {}
+export type RouteAccess = "public" | "session" | ["internal:public", string] | ["internal:session", string];
 
 type HandleFn<TArgs extends Array<any> = any[], TResponse = any> = (
   ...args: TArgs

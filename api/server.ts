@@ -1,14 +1,13 @@
-import { resolve } from "@std/path";
-import cookie from "cookie";
-
-import { auth, type Session } from "~libraries/auth/mod.ts";
-import { logger } from "~libraries/logger/mod.ts";
-import { type Storage, storage } from "~libraries/server/mod.ts";
-import { Api, resolveRoutes } from "~libraries/server/mod.ts";
+import identity from "@modules/identity/server.ts";
+import database from "@platform/database/server.ts";
+import { logger } from "@platform/logger";
+import { context } from "@platform/relay";
+import { Api } from "@platform/server/api.ts";
+import server from "@platform/server/server.ts";
+import socket from "@platform/socket/server.ts";
+import { storage } from "@platform/storage";
 
 import { config } from "./config.ts";
-
-const ROUTES_DIR = resolve(import.meta.dirname!, "routes");
 
 const log = logger.prefix("Server");
 
@@ -18,7 +17,15 @@ const log = logger.prefix("Server");
  |--------------------------------------------------------------------------------
  */
 
-await import("./.tasks/bootstrap.ts");
+// ### Platform
+
+await database.bootstrap();
+await server.bootstrap();
+await socket.bootstrap();
+
+// ### Modules
+
+await identity.bootstrap();
 
 /*
  |--------------------------------------------------------------------------------
@@ -26,7 +33,7 @@ await import("./.tasks/bootstrap.ts");
  |--------------------------------------------------------------------------------
  */
 
-const api = new Api(await resolveRoutes(ROUTES_DIR));
+const api = new Api([...identity.routes]);
 
 /*
  |--------------------------------------------------------------------------------
@@ -42,42 +49,25 @@ Deno.serve(
       logger.prefix("Server").info(`Listening at http://${hostname}:${port}`);
     },
   },
-  async (request) => {
-    const url = new URL(request.url);
+  async (request) =>
+    storage.run({}, async () => {
+      const url = new URL(request.url);
 
-    let session: Session | undefined;
+      // ### Storage Context
+      // Resolve storage context for all dependent modules.
 
-    const token = cookie.parse(request.headers.get("cookie") ?? "").token;
-    if (token !== undefined) {
-      const resolved = await auth.resolve(token);
-      if (resolved.valid === false) {
-        return new Response(resolved.message, {
-          status: 401,
-          headers: {
-            "set-cookie": cookie.serialize("token", "", config.cookie(0)),
-          },
-        });
-      }
-      session = resolved;
-    }
+      await server.resolve(request);
+      await socket.resolve();
 
-    const context = {
-      session,
-      info: {
-        method: request.url,
-        start: Date.now(),
-      },
-      response: {
-        headers: new Headers(),
-      },
-    } satisfies Storage;
+      await identity.resolve(request);
 
-    return storage.run(context, async () => {
+      // ### Fetch
+      // Execute fetch against the api instance.
+
       return api.fetch(request).finally(() => {
         log.info(
           `${request.method} ${url.pathname} [${((Date.now() - context.info.start) / 1000).toLocaleString()} seconds]`,
         );
       });
-    });
-  },
+    }),
 );

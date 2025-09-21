@@ -1,0 +1,13 @@
+{
+  "name": "@platform/storage",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./storage.ts",
+  "exports": {
+    ".": "./storage.ts"
+  },
+  "dependencies": {
+    "@platform/relay": "workspace:*"
+  }
+}

@@ -4,14 +4,31 @@
   "workspace": [
     "api",
     "apps/react",
-    "platform/models",
+    "modules/identity",
+    "platform/cerbos",
+    "platform/config",
+    "platform/database",
+    "platform/logger",
     "platform/relay",
-    "platform/spec"
+    "platform/server",
+    "platform/socket",
+    "platform/spec",
+    "platform/storage",
+    "platform/vault"
   ],
   "imports": {
-    "@platform/models/": "./platform/models/",
+    "@modules/identity/client.ts": "./modules/identity/client.ts",
+    "@modules/identity/server.ts": "./modules/identity/server.ts",
+    "@platform/cerbos/": "./platform/cerbos/",
+    "@platform/config/": "./platform/config/",
+    "@platform/database/": "./platform/database/",
+    "@platform/logger": "./platform/logger/mod.ts",
     "@platform/relay": "./platform/relay/mod.ts",
-    "@platform/spec/": "./platform/spec/"
+    "@platform/server/": "./platform/server/",
+    "@platform/socket/": "./platform/socket/",
+    "@platform/spec/": "./platform/spec/",
+    "@platform/storage": "./platform/storage/storage.ts",
+    "@platform/vault": "./platform/vault/vault.ts"
   },
   "tasks": {
     "start:api": {
