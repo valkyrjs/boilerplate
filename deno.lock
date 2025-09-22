@@ -2239,7 +2239,8 @@
         "packageJson": {
           "dependencies": [
             "npm:@cerbos/http@0.23.1",
-            "npm:@jsr/valkyr__auth@2.1.4"
+            "npm:@jsr/valkyr__auth@2.1.4",
+            "npm:zod@4.1.11"
           ]
         }
       },

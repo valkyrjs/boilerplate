@@ -16,6 +16,7 @@ export const IdentitySchema = z.object({
   }),
   strategies: z.array(StrategySchema).default([]),
   roles: z.array(RoleSchema).default([]),
+  attributes: z.record(z.string(), z.any()),
 });
 
 /*

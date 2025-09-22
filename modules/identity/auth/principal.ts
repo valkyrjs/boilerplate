@@ -1,5 +1,6 @@
 import { HttpAdapter, makeClient } from "@platform/relay";
 import { PrincipalProvider } from "@valkyr/auth";
+import z from "zod";
 
 import { config } from "../config.ts";
 import resolve from "../routes/identities/resolve/spec.ts";
@@ -18,15 +19,21 @@ export const identity = makeClient(
   },
 );
 
-export const principal = new PrincipalProvider(RoleSchema, {}, async function (id: string) {
-  const response = await identity.resolve({ params: { id } });
-  if ("data" in response) {
-    return {
-      id,
-      roles: response.data.roles,
-      attributes: {},
-    };
-  }
-});
+export const principal = new PrincipalProvider(
+  RoleSchema,
+  {
+    workspaceIds: z.array(z.string()).optional().default([]),
+  },
+  async function (id: string) {
+    const response = await identity.resolve({ params: { id } });
+    if ("data" in response) {
+      return {
+        id,
+        roles: response.data.roles,
+        attributes: this.attributes.parse(response.data.attributes),
+      };
+    }
+  },
+);
 
 export type Principal = typeof principal.$principal;

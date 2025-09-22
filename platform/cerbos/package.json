@@ -5,6 +5,8 @@
   "type": "module",
   "dependencies": {
     "@cerbos/http": "0.23.1",
-    "@valkyr/auth": "npm:@jsr/valkyr__auth@2.1.4"
+    "@platform/config": "workspace:*",
+    "@valkyr/auth": "npm:@jsr/valkyr__auth@2.1.4",
+    "zod": "4.1.11"
   }
 }
