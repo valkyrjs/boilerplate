@@ -1,27 +1,23 @@
 import { logger } from "@platform/logger";
+import Passwordless from "supertokens-node/recipe/passwordless";
 
-import { Code } from "../../../aggregates/code.ts";
-import { getIdentityEmailRelation, Identity } from "../../../aggregates/identity.ts";
-import { eventStore } from "../../../event-store.ts";
 import route from "./spec.ts";
 
-export default route.access("public").handle(async ({ body: { base, email } }) => {
-  const identity = await eventStore.aggregate.getByRelation(Identity, getIdentityEmailRelation(email));
-  if (identity === undefined) {
+export default route.access("public").handle(async ({ body: { email } }) => {
+  const response = await Passwordless.createCode({ tenantId: "public", email });
+  if (response.status !== "OK") {
     return logger.info({
-      type: "auth:email",
-      code: false,
-      message: "Identity Not Found",
+      type: "auth:passwordless",
+      message: "Create code failed.",
       received: email,
     });
   }
-  const code = await eventStore.aggregate.from(Code).create({ id: identity.id }).save();
   logger.info({
-    type: "auth:email",
+    type: "auth:passwordless",
     data: {
-      code: code.id,
-      identityId: identity.id,
+      deviceId: response.deviceId,
+      preAuthSessionId: response.preAuthSessionId,
+      userInputCode: response.userInputCode,
     },
-    link: `${base}/api/v1/admin/auth/${identity.id}/code/${code.id}/${code.value}?next=${base}/admin`,
   });
 });

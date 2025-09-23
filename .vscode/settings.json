@@ -27,6 +27,4 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true
   },
-  "vue.format.style.initialIndent": true,
-  "vue.format.script.initialIndent": true
 }

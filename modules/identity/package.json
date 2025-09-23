@@ -7,22 +7,11 @@
     "./client.ts": "./client.ts",
     "./server.ts": "./server.ts"
   },
-  "types": "types.d.ts",
   "dependencies": {
-    "@cerbos/http": "0.23.1",
-    "@felix/bcrypt": "npm:@jsr/felix__bcrypt@1.0.5",
-    "@platform/cerbos": "workspace:*",
     "@platform/config": "workspace:*",
-    "@platform/database": "workspace:*",
     "@platform/logger": "workspace:*",
     "@platform/relay": "workspace:*",
-    "@platform/server": "workspace:*",
-    "@platform/spec": "workspace:*",
-    "@platform/storage": "workspace:*",
-    "@platform/vault": "workspace:*",
-    "@valkyr/auth": "npm:@jsr/valkyr__auth@2.1.4",
-    "@valkyr/event-store": "npm:@jsr/valkyr__event-store@2.0.1",
-    "cookie": "1.0.2",
+    "supertokens-node": "23.0.1",
     "zod": "4.1.11"
   }
 }

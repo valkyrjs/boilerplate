@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+# docs: https://docs.cerbos.dev/cerbos/latest/policies/resource_policies
+
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: workspace_user
+  version: default
+  rules:
+
+    # Admins can invite new members into their own workspace
+
+    - actions:
+        - invite
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+      condition:
+        match:
+          expr: request.principal.workspaceIds.includes(request.resource.workspaceId)
+
+    # Admins can remove members from their own workspace
+
+    - actions:
+        - remove
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+      condition:
+        match:
+          expr: request.principal.workspaceIds.includes(request.resource.workspaceId)
+
+    # Admins can update member roles in their own workspace
+
+    - actions:
+        - update_role
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+      condition:
+        match:
+          expr: request.principal.workspaceIds.includes(request.resource.workspaceId)
+
+    # Admins and users can list/read members of their own workspace
+
+    - actions:
+        - list
+        - read
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+        - user
+      condition:
+        match:
+          expr: request.principal.workspaceIds.includes(request.resource.workspaceId)

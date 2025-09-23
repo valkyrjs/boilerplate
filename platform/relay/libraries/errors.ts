@@ -286,7 +286,7 @@ export class UnprocessableContentError<TData = unknown> extends ServerError<TDat
   }
 }
 
-export class ValidationError extends ServerError<ValidationErrorData> {
+export class ValidationError<TData = unknown> extends ServerError<TData> {
   readonly code = "VALIDATION";
 
   /**
@@ -298,7 +298,7 @@ export class ValidationError extends ServerError<ValidationErrorData> {
    * @param message - Optional message to send with the error. Default: "Validation Failed".
    * @param data    - Data with validation failure details.
    */
-  constructor(message = "Validation Failed", data: ValidationErrorData) {
+  constructor(message = "Validation Failed", data: TData) {
     super(message, 422, data);
   }
 
@@ -322,7 +322,7 @@ export class ValidationError extends ServerError<ValidationErrorData> {
           message: issue.message,
         };
       }),
-    });
+    } satisfies ValidationErrorData);
   }
 }
 

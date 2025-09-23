@@ -1,19 +1,21 @@
 meta {
   name: Code
   type: http
-  seq: 2
+  seq: 3
 }
 
-get {
-  url: {{url}}/identities/login/code/:identityId/code/:codeId/:value
-  body: none
+post {
+  url: {{url}}/identity/login/code
+  body: json
   auth: inherit
 }
 
-params:path {
-  identityId: efefa471-905d-4702-bd0a-863d8cf70424
-  codeId: 7055b769-0814-47b8-836e-cfef2d8c2e68
-  value: 00597
+body:json {
+  {
+    "deviceId": "",
+    "preAuthSessionId": "",
+    "userInputCode": ""
+  }
 }
 
 script:post-response {

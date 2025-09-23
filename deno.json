@@ -5,7 +5,7 @@
     "api",
     "apps/react",
     "modules/identity",
-    "platform/cerbos",
+    "modules/workspace",
     "platform/config",
     "platform/database",
     "platform/logger",
@@ -14,12 +14,14 @@
     "platform/socket",
     "platform/spec",
     "platform/storage",
+    "platform/supertoken",
     "platform/vault"
   ],
   "imports": {
     "@modules/identity/client.ts": "./modules/identity/client.ts",
     "@modules/identity/server.ts": "./modules/identity/server.ts",
-    "@platform/cerbos/": "./platform/cerbos/",
+    "@modules/workspace/client.ts": "./modules/workspace/client.ts",
+    "@modules/workspace/server.ts": "./modules/workspace/server.ts",
     "@platform/config/": "./platform/config/",
     "@platform/database/": "./platform/database/",
     "@platform/logger": "./platform/logger/mod.ts",
@@ -28,6 +30,7 @@
     "@platform/socket/": "./platform/socket/",
     "@platform/spec/": "./platform/spec/",
     "@platform/storage": "./platform/storage/storage.ts",
+    "@platform/supertoken/": "./platform/supertoken/",
     "@platform/vault": "./platform/vault/vault.ts"
   },
   "tasks": {

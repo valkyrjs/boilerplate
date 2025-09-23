@@ -2,12 +2,14 @@ import { route } from "@platform/relay";
 import z from "zod";
 
 export default route
-  .get("/api/v1/identities/login/code/:identityId/code/:codeId/:value")
-  .params({
-    identityId: z.string(),
-    codeId: z.string(),
-    value: z.string(),
-  })
+  .post("/api/v1/identity/login/code")
+  .body(
+    z.strictObject({
+      deviceId: z.string(),
+      preAuthSessionId: z.string(),
+      userInputCode: z.string(),
+    }),
+  )
   .query({
     next: z.string().optional(),
   });

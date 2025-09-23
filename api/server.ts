@@ -1,4 +1,5 @@
 import identity from "@modules/identity/server.ts";
+import workspace from "@modules/workspace/server.ts";
 import database from "@platform/database/server.ts";
 import { logger } from "@platform/logger";
 import { context } from "@platform/relay";
@@ -6,6 +7,7 @@ import { Api } from "@platform/server/api.ts";
 import server from "@platform/server/server.ts";
 import socket from "@platform/socket/server.ts";
 import { storage } from "@platform/storage";
+import supertokens from "@platform/supertoken/server.ts";
 
 import { config } from "./config.ts";
 
@@ -22,10 +24,11 @@ const log = logger.prefix("Server");
 await database.bootstrap();
 await server.bootstrap();
 await socket.bootstrap();
+await supertokens.bootsrap();
 
 // ### Modules
 
-await identity.bootstrap();
+await workspace.bootstrap();
 
 /*
  |--------------------------------------------------------------------------------
@@ -33,7 +36,7 @@ await identity.bootstrap();
  |--------------------------------------------------------------------------------
  */
 
-const api = new Api([...identity.routes]);
+const api = new Api([...identity.routes, ...workspace.routes]);
 
 /*
  |--------------------------------------------------------------------------------
@@ -58,8 +61,7 @@ Deno.serve(
 
       await server.resolve(request);
       await socket.resolve();
-
-      await identity.resolve(request);
+      await supertokens.resolve(request);
 
       // ### Fetch
       // Execute fetch against the api instance.
