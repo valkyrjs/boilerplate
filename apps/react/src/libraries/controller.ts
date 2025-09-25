@@ -64,7 +64,7 @@ export class Controller<TState extends Unknown = Empty, TProps extends Unknown =
     component: ReactComponent<TProps, TController>,
     setView: any,
   ): InstanceType<TController> {
-    return new this(component, setView);
+    return new Controller(component, setView);
   }
 
   /*

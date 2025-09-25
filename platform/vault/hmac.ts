@@ -46,6 +46,9 @@ function bufferToHex(buffer: ArrayBuffer): string {
 }
 
 function hexToBuffer(hex: string): ArrayBuffer {
-  const bytes = new Uint8Array(hex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
-  return bytes.buffer;
+  const match = hex.match(/.{1,2}/g);
+  if (match === null) {
+    return new Uint8Array().buffer;
+  }
+  return new Uint8Array(match.map((byte) => parseInt(byte, 16))).buffer;
 }

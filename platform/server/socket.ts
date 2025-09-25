@@ -8,7 +8,7 @@ import type { Api } from "./api.ts";
 /**
  * TODO ...
  */
-export function upgradeWebSocket(request: Request, api: Api) {
+export function upgradeWebSocket(request: Request, _api: Api) {
   const { socket, response } = Deno.upgradeWebSocket(request);
 
   socket.addEventListener("open", () => {

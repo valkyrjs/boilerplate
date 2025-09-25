@@ -8,7 +8,7 @@ import socket from "@platform/socket/server.ts";
 import { storage } from "@platform/storage";
 
 import { config } from "./config.ts";
-import session from "./services/session.ts";
+import session from "./session.ts";
 
 const log = logger.prefix("Server");
 

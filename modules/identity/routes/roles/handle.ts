@@ -1,5 +1,4 @@
-import { ForbiddenError } from "@platform/relay";
-import { NotFoundError } from "@platform/relay";
+import { ForbiddenError, NotFoundError } from "@platform/relay";
 
 import { getPrincipalById, setPrincipalRolesById } from "../../services/database.ts";
 import route from "./spec.ts";

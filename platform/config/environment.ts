@@ -1,5 +1,5 @@
 import { load } from "@std/dotenv";
-import { z, type ZodType } from "zod";
+import type { ZodType, z } from "zod";
 
 import { InvalidEnvironmentKeyError } from "./errors.ts";
 import { getServiceEnvironment, type ServiceEnvironment } from "./service.ts";

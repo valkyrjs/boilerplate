@@ -1,5 +1,5 @@
 import type { Db } from "mongodb";
-import z, { type ZodObject, type ZodType } from "zod";
+import type { ZodObject, ZodType, z } from "zod";
 
 /**
  * TODO ...
@@ -29,7 +29,7 @@ export function makeDocumentParser<TSchema extends ZodObject>(schema: TSchema): 
 export function toParsedDocuments<TSchema extends ZodType>(
   schema: TSchema,
 ): (documents: unknown[]) => Promise<z.infer<TSchema>[]> {
-  return async function (documents: unknown[]) {
+  return async (documents: unknown[]) => {
     const parsed = [];
     for (const document of documents) {
       parsed.push(await schema.parseAsync(document));
@@ -44,7 +44,7 @@ export function toParsedDocuments<TSchema extends ZodType>(
 export function toParsedDocument<TSchema extends ZodType>(
   schema: TSchema,
 ): (document?: unknown) => Promise<z.infer<TSchema> | undefined> {
-  return async function (document: unknown) {
+  return async (document: unknown) => {
     if (document === undefined || document === null) {
       return undefined;
     }

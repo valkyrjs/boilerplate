@@ -1,6 +1,6 @@
 import route from "./spec.ts";
 
-export default route.access("public").handle(async ({ body: { email } }) => {
+export default route.access("public").handle(async () => {
   // const code = await Passwordless.createCode({ tenantId: "public", email });
   // if (code.status !== "OK") {
   //   return logger.info({

@@ -1,6 +1,7 @@
-import React, { type FunctionComponent } from "react";
+import type React from "react";
+import type { FunctionComponent } from "react";
 
-import { ControllerRefs } from "./refs.ts";
+import type { ControllerRefs } from "./refs.ts";
 
 export type ReactComponent<TProps extends Unknown, TController extends ControllerClass> = FunctionComponent<{
   props: TProps;

@@ -1,5 +1,5 @@
 import { mongo } from "@platform/database/client.ts";
-import { EventFactory, EventStore, Prettify, Projector } from "@valkyr/event-store";
+import { EventFactory, EventStore, type Prettify, Projector } from "@valkyr/event-store";
 import { MongoAdapter } from "@valkyr/event-store/mongo";
 
 /*

@@ -5,7 +5,7 @@ import { TodosController } from "./todos.controller.ts";
 
 export const TodosView = makeControllerView(
   TodosController,
-  ({ state: { form, todos }, actions: { remove, stress } }) => {
+  ({ state: { form, todos }, actions: { remove } }) => {
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4 font-sans">
         <div className="w-full max-w-2xl space-y-8">

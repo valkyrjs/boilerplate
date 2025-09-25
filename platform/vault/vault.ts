@@ -1,6 +1,13 @@
 import * as Jose from "jose";
 
-import { createKeyPair, ExportedKeyPair, importPrivateKey, importPublicKey, KeyPair, loadKeyPair } from "./key-pair.ts";
+import {
+  createKeyPair,
+  type ExportedKeyPair,
+  importPrivateKey,
+  importPublicKey,
+  type KeyPair,
+  loadKeyPair,
+} from "./key-pair.ts";
 
 /*
  |--------------------------------------------------------------------------------

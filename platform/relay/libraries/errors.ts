@@ -1,4 +1,4 @@
-import { ZodError } from "zod";
+import type { ZodError } from "zod";
 
 export abstract class ServerError<TData = unknown> extends Error {
   abstract readonly code: string;

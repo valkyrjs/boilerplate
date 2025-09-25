@@ -1,6 +1,6 @@
 import { cerbos } from "@platform/cerbos";
 
-import { Principal } from "../models/principal.ts";
+import type { Principal } from "../models/principal.ts";
 
 export function getAccessControlMethods(principal: Principal) {
   return {

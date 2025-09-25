@@ -1,8 +1,9 @@
-import z, { ZodType } from "zod";
+import type z from "zod";
+import type { ZodType } from "zod";
 
-import { ServerContext } from "./context.ts";
-import { ServerError, ServerErrorClass } from "./errors.ts";
-import { RouteAccess } from "./route.ts";
+import type { ServerContext } from "./context.ts";
+import type { ServerError, ServerErrorClass } from "./errors.ts";
+import type { RouteAccess } from "./route.ts";
 
 export class Procedure<const TState extends State = State> {
   readonly type = "procedure" as const;
@@ -234,7 +235,8 @@ type HandleFn<TArgs extends Array<any> = any[], TResponse = any> = (
   ? Promise<z.infer<TResponse> | Response | ServerError>
   : Promise<Response | ServerError | void>;
 
-type ServerArgs<TState extends State> =
-  HasInputArgs<TState> extends true ? [z.output<TState["params"]>, ServerContext] : [ServerContext];
+type ServerArgs<TState extends State> = HasInputArgs<TState> extends true
+  ? [z.output<TState["params"]>, ServerContext]
+  : [ServerContext];
 
 type HasInputArgs<TState extends State> = TState["params"] extends ZodType ? true : false;

@@ -1,6 +1,6 @@
 import route from "./spec.ts";
 
-export default route.access("session").handle(async ({ params: { id } }, { session, principal, access }) => {
+export default route.access("session").handle(async () => {
   // const user = await getUserById(id);
   // if (user === undefined) {
   //   return new NotFoundError("Identity does not exist, or has been removed.");

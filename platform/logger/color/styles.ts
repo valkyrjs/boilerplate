@@ -1,4 +1,4 @@
-import { hexToAnsi256, HexValue } from "./hex.ts";
+import { type HexValue, hexToAnsi256 } from "./hex.ts";
 import { toEscapeSequence } from "./utilities.ts";
 
 export const styles = {

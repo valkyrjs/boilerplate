@@ -1,5 +1,5 @@
 import { getEnvironmentVariable } from "@platform/config/environment.ts";
-import { SerializeOptions } from "cookie";
+import type { SerializeOptions } from "cookie";
 import z from "zod";
 
 export const config = {

@@ -1,9 +1,7 @@
 import "./types.ts";
 
-import { context } from "@platform/relay";
-import { InternalServerError } from "@platform/relay";
-import { storage } from "@platform/storage";
-import { getStorageContext } from "@platform/storage";
+import { context, InternalServerError } from "@platform/relay";
+import { getStorageContext, storage } from "@platform/storage";
 
 export default {
   /**

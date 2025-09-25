@@ -1,9 +1,9 @@
-import { match, type MatchFunction } from "path-to-regexp";
-import z, { ZodObject, ZodRawShape, ZodType } from "zod";
+import { type MatchFunction, match } from "path-to-regexp";
+import z, { type ZodObject, type ZodRawShape, type ZodType } from "zod";
 
-import { ServerContext } from "./context.ts";
-import { ServerError, ServerErrorClass } from "./errors.ts";
-import { Hooks } from "./hooks.ts";
+import type { ServerContext } from "./context.ts";
+import { ServerError, type ServerErrorClass } from "./errors.ts";
+import type { Hooks } from "./hooks.ts";
 
 export class Route<const TState extends RouteState = RouteState> {
   readonly type = "route" as const;
@@ -480,15 +480,14 @@ type HandleFn<TArgs extends Array<any> = any[], TResponse = any> = (
   ? Promise<z.infer<TResponse> | Response | ServerError>
   : Promise<Response | ServerError | void>;
 
-type ServerArgs<TState extends RouteState> =
-  HasInputArgs<TState> extends true
-    ? [
-        (TState["params"] extends ZodObject ? { params: z.output<TState["params"]> } : unknown) &
-          (TState["query"] extends ZodObject ? { query: z.output<TState["query"]> } : unknown) &
-          (TState["body"] extends ZodType ? { body: z.output<TState["body"]> } : unknown),
-        ServerContext,
-      ]
-    : [ServerContext];
+type ServerArgs<TState extends RouteState> = HasInputArgs<TState> extends true
+  ? [
+      (TState["params"] extends ZodObject ? { params: z.output<TState["params"]> } : unknown) &
+        (TState["query"] extends ZodObject ? { query: z.output<TState["query"]> } : unknown) &
+        (TState["body"] extends ZodType ? { body: z.output<TState["body"]> } : unknown),
+      ServerContext,
+    ]
+  : [ServerContext];
 
 type HasInputArgs<TState extends RouteState> = TState["params"] extends ZodObject
   ? true

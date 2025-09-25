@@ -1,7 +1,6 @@
 import "./types.d.ts";
 
-import { InternalServerError } from "@platform/relay";
-import { context } from "@platform/relay";
+import { context, InternalServerError } from "@platform/relay";
 import { getStorageContext, storage } from "@platform/storage";
 
 import { SocketRegistry } from "./sockets.ts";

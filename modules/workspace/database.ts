@@ -1,7 +1,7 @@
 import { getDatabaseAccessor } from "@platform/database/accessor.ts";
 
 import { parseWorkspace, type Workspace } from "./models/workspace.ts";
-import { WorkspaceUser } from "./models/workspace-user.ts";
+import type { WorkspaceUser } from "./models/workspace-user.ts";
 
 export const db = getDatabaseAccessor<{
   workspaces: Workspace;

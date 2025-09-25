@@ -2,12 +2,12 @@ import { encrypt } from "@platform/vault";
 
 import {
   assertServerErrorResponse,
-  RelayAdapter,
-  RelayInput,
-  RelayResponse,
-  ServerErrorResponse,
+  type RelayAdapter,
+  type RelayInput,
+  type RelayResponse,
+  type ServerErrorResponse,
 } from "../libraries/adapter.ts";
-import { ServerError, ServerErrorType } from "../libraries/errors.ts";
+import { ServerError, type ServerErrorType } from "../libraries/errors.ts";
 
 /**
  * HttpAdapter provides a unified transport layer for Relay.

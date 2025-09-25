@@ -1,8 +1,8 @@
-import { AuditActor, auditors } from "@platform/spec/audit/actor.ts";
+import { type AuditActor, auditors } from "@platform/spec/audit/actor.ts";
 import { AggregateRoot, getDate } from "@valkyr/event-store";
 
 import { db } from "../database.ts";
-import { EventRecord, EventStoreFactory, projector } from "../event-store.ts";
+import { type EventRecord, type EventStoreFactory, projector } from "../event-store.ts";
 
 export class Workspace extends AggregateRoot<EventStoreFactory> {
   static override readonly name = "workspace";

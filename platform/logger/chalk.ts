@@ -1,4 +1,4 @@
-import { HexValue } from "./color/hex.ts";
+import type { HexValue } from "./color/hex.ts";
 import { type BGColor, type Color, hexToBgColor, hexToColor, type Modifier, styles } from "./color/styles.ts";
 
 export const chalk = {
@@ -13,21 +13,15 @@ export const chalk = {
 } as Chalk;
 
 for (const key in styles.modifier) {
-  chalk[key as Modifier] = function (value: string) {
-    return toModifiedValue(key as Modifier, value);
-  };
+  chalk[key as Modifier] = (value: string) => toModifiedValue(key as Modifier, value);
 }
 
 for (const key in styles.color) {
-  chalk[key as Color] = function (value: string) {
-    return toColorValue(key as Color, value);
-  };
+  chalk[key as Color] = (value: string) => toColorValue(key as Color, value);
 }
 
 for (const key in styles.bgColor) {
-  chalk[key as BGColor] = function (value: string) {
-    return toBGColorValue(key as BGColor, value);
-  };
+  chalk[key as BGColor] = (value: string) => toBGColorValue(key as BGColor, value);
 }
 
 function toModifiedValue(key: Modifier, value: string): string {

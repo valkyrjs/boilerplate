@@ -82,7 +82,7 @@ function useController(controller: ControllerClass, component: any, props: any, 
     return () => {
       instance.$destroy();
     };
-  }, []);
+  }, [component, controller, setView]);
 
   return error;
 }

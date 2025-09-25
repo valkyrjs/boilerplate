@@ -43,16 +43,8 @@
       "description": "Start react application instance."
     },
     "check": {
-      "command": "deno check ./api/server.ts ./platform",
-      "description": "Runs a check on all the projects main entry files."
-    },
-    "lint": {
-      "command": "npx eslint -c eslint.config.mjs .",
-      "description": "Runs eslint across the entire project."
-    },
-    "fmt": {
-      "command": "npx prettier --write .",
-      "description": "Runs prettier formatting across the entire project."
+      "command": "deno run -A npm:@biomejs/biome check --write ./api ./modules ./platform",
+      "description": "Format, lint, and organize imports of the entire project."
     },
     "test": {
       "command": "deno test --allow-all",

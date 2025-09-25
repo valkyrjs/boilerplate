@@ -1,4 +1,4 @@
-import { Collection, type CollectionOptions, type Db, type Document, type MongoClient } from "mongodb";
+import type { Collection, CollectionOptions, Db, Document, MongoClient } from "mongodb";
 
 import { mongo } from "./client.ts";
 

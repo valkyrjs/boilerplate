@@ -41,7 +41,9 @@ export class SocketRegistry {
    * @param data - Data to send to each connected socket.
    */
   send(data: string | ArrayBufferLike | Blob | ArrayBufferView): this {
-    this.#sockets.forEach((socket) => socket.send(data));
+    this.#sockets.forEach((socket) => {
+      socket.send(data);
+    });
     return this;
   }
 }

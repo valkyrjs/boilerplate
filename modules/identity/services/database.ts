@@ -1,11 +1,11 @@
 import { getDatabaseAccessor } from "@platform/database/accessor.ts";
 
 import {
-  parsePrincipal,
-  type Principal,
   PRINCIPAL_TYPE_NAMES,
+  type Principal,
   PrincipalSchema,
   PrincipalTypeId,
+  parsePrincipal,
 } from "../models/principal.ts";
 
 export const db = getDatabaseAccessor<{
