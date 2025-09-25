@@ -5,9 +5,8 @@ export default route
   .post("/api/v1/identity/login/code")
   .body(
     z.strictObject({
-      deviceId: z.string(),
-      preAuthSessionId: z.string(),
-      userInputCode: z.string(),
+      email: z.string(),
+      otp: z.string(),
     }),
   )
   .query({

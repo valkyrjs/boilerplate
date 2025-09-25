@@ -1,6 +1,6 @@
 import { Collection, type CollectionOptions, type Db, type Document, type MongoClient } from "mongodb";
 
-import { container } from "./container.ts";
+import { mongo } from "./client.ts";
 
 export function getDatabaseAccessor<TSchemas extends Record<string, Document>>(
   database: string,
@@ -14,7 +14,7 @@ export function getDatabaseAccessor<TSchemas extends Record<string, Document>>(
       return instance;
     },
     get client(): MongoClient {
-      return container.get("mongo");
+      return mongo;
     },
     collection<TSchema extends keyof TSchemas>(
       name: TSchema,

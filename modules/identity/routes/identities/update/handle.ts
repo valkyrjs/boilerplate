@@ -1,15 +1,18 @@
-import { ForbiddenError } from "@platform/relay";
-import { getPrincipalAttributes } from "@platform/supertoken/principal.ts";
-import UserMetadata from "supertokens-node/recipe/usermetadata";
+import { ForbiddenError, NotFoundError } from "@platform/relay";
 
+import { getPrincipalById, setPrincipalAttributesById } from "../../../services/database.ts";
 import route from "./spec.ts";
 
 export default route.access("session").handle(async ({ params: { id }, body: ops }, { access }) => {
-  const decision = await access.isAllowed({ kind: "identity", id, attr: {} }, "update");
+  const principal = await getPrincipalById(id);
+  if (principal === undefined) {
+    return new NotFoundError();
+  }
+  const decision = await access.isAllowed({ kind: "identity", id: principal.id, attr: principal.attr }, "update");
   if (decision === false) {
     return new ForbiddenError("You do not have permission to update this identity.");
   }
-  const attr = await getPrincipalAttributes(id);
+  const attr = principal.attr;
   for (const op of ops) {
     switch (op.type) {
       case "add": {
@@ -36,5 +39,5 @@ export default route.access("session").handle(async ({ params: { id }, body: ops
       }
     }
   }
-  await UserMetadata.updateUserMetadata(id, { attr });
+  await setPrincipalAttributesById(id, attr);
 });

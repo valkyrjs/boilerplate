@@ -1,4 +1,4 @@
-import "./types.d.ts";
+import "./types.ts";
 
 import { context } from "@platform/relay";
 import { InternalServerError } from "@platform/relay";

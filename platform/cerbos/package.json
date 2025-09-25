@@ -1,13 +1,15 @@
 {
-  "name": "@platform/supertoken",
+  "name": "@platform/auth",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./mod.ts",
+  "exports": {
+    ".": "./mod.ts"
+  },
   "dependencies": {
     "@cerbos/http": "0.23.1",
-    "@platform/config": "workspace:*",
-    "cookie": "1.0.2",
-    "supertokens-node": "23.0.1",
+    "@platform/logger": "workspace:*",
     "zod": "4.1.11"
   }
 }

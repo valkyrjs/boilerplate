@@ -1,4 +1,4 @@
-import { container } from "@platform/database/container.ts";
+import { mongo } from "@platform/database/client.ts";
 import { EventFactory, EventStore, Prettify, Projector } from "@valkyr/event-store";
 import { MongoAdapter } from "@valkyr/event-store/mongo";
 
@@ -20,7 +20,7 @@ const eventFactory = new EventFactory([
  */
 
 export const eventStore = new EventStore({
-  adapter: new MongoAdapter(() => container.get("mongo"), `workspace:event-store`),
+  adapter: new MongoAdapter(() => mongo, `workspace:event-store`),
   events: eventFactory,
   snapshot: "auto",
 });

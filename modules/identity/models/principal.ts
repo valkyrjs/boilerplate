@@ -1,5 +1,17 @@
-import UserMetadata from "supertokens-node/recipe/usermetadata";
+import { makeDocumentParser } from "@platform/database/utilities.ts";
 import z from "zod";
+
+export enum PrincipalTypeId {
+  User = 1,
+  Group = 2,
+  Other = 99,
+}
+
+export const PRINCIPAL_TYPE_NAMES = {
+  [PrincipalTypeId.User]: "User",
+  [PrincipalTypeId.Group]: "Group",
+  [PrincipalTypeId.Other]: "Other",
+};
 
 /*
  |--------------------------------------------------------------------------------
@@ -9,33 +21,21 @@ import z from "zod";
 
 export const PrincipalSchema = z.object({
   id: z.string(),
+  type: z.strictObject({
+    id: z.enum(PrincipalTypeId),
+    name: z.string(),
+  }),
   roles: z.array(z.string()),
   attr: z.record(z.string(), z.any()),
 });
 
 /*
  |--------------------------------------------------------------------------------
- | Utilities
+ | Parsers
  |--------------------------------------------------------------------------------
  */
 
-/**
- * Get principal roles from the provided userId.
- *
- * @param userId - User to get principal roles from.
- */
-export async function getPrincipalRoles(userId: string): Promise<string[]> {
-  return (await UserMetadata.getUserMetadata(userId)).metadata?.roles ?? [];
-}
-
-/**
- * Get principal attributes from the provided userId.
- *
- * @param userId - User to get principal attributes from.
- */
-export async function getPrincipalAttributes(userId: string): Promise<Record<string, any>> {
-  return (await UserMetadata.getUserMetadata(userId)).metadata?.attr ?? {};
-}
+export const parsePrincipal = makeDocumentParser(PrincipalSchema);
 
 /*
  |--------------------------------------------------------------------------------

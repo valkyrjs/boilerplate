@@ -30,7 +30,6 @@ declare module "@platform/storage" {
 
 declare module "@platform/relay" {
   interface ServerContext {
-    isAuthenticated: boolean;
     request: {
       headers: Headers;
     };

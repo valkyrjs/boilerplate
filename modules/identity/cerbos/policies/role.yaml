@@ -11,4 +11,4 @@ resourcePolicy:
 
     - actions: ["manage"]
       effect: EFFECT_ALLOW
-      roles: ["admin"]
+      roles: ["super"]

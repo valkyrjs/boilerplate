@@ -1,25 +1,16 @@
-import { logger } from "@platform/logger";
 import { NotFoundError } from "@platform/relay";
-import { getSessionHeaders } from "@platform/supertoken/session.ts";
-import Passwordless from "supertokens-node/recipe/passwordless";
 
+import { auth } from "../../../services/auth.ts";
+import { logger } from "../../../services/logger.ts";
 import route from "./spec.ts";
 
-export default route.access("public").handle(async ({ body: { preAuthSessionId, deviceId, userInputCode } }) => {
-  const response = await Passwordless.consumeCode({ tenantId: "public", preAuthSessionId, deviceId, userInputCode });
-  if (response.status !== "OK") {
+export default route.access("public").handle(async ({ body: { email, otp } }) => {
+  const response = await auth.api.signInEmailOTP({ body: { email, otp }, asResponse: true, returnHeaders: true });
+  if (response.status !== 200) {
+    logger.error("OTP Signin Failed", await response.json());
     return new NotFoundError();
   }
-
-  logger.info({
-    type: "code:claimed",
-    session: true,
-    message: "Identity resolved",
-    user: response.user.toJson(),
-  });
-
   return new Response(null, {
-    status: 200,
-    headers: await getSessionHeaders("public", response.recipeUserId),
+    headers: response.headers,
   });
 });

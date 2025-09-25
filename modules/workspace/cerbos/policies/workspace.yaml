@@ -16,18 +16,18 @@ resourcePolicy:
       roles: ["super", "admin", "user"]
       condition:
         match:
-          expr: R.attr.id in P.attr.workspaceIds
+          expr: R.attr.workspaceId in P.attr.workspaceIds
 
     - actions: ["update"]
       effect: EFFECT_ALLOW
       roles: ["super", "admin"]
       condition:
         match:
-          expr: R.attr.id in P.attr.workspaceIds
+          expr: R.attr.workspaceId in P.attr.workspaceIds
 
     - actions: ["delete"]
       effect: EFFECT_ALLOW
       roles: ["super"]
       condition:
         match:
-          expr: R.attr.id in P.attr.workspaceIds
+          expr: R.attr.workspaceId in P.attr.workspaceIds

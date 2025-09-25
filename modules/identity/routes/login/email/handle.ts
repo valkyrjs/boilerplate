@@ -1,23 +1,14 @@
-import { logger } from "@platform/logger";
-import Passwordless from "supertokens-node/recipe/passwordless";
-
+import { auth } from "../../../services/auth.ts";
+import { logger } from "../../../services/logger.ts";
 import route from "./spec.ts";
 
 export default route.access("public").handle(async ({ body: { email } }) => {
-  const response = await Passwordless.createCode({ tenantId: "public", email });
-  if (response.status !== "OK") {
-    return logger.info({
+  const response = await auth.api.sendVerificationOTP({ body: { email, type: "sign-in" } });
+  if (response.success === false) {
+    logger.info({
       type: "auth:passwordless",
-      message: "Create code failed.",
+      message: "OTP Email verification failed.",
       received: email,
     });
   }
-  logger.info({
-    type: "auth:passwordless",
-    data: {
-      deviceId: response.deviceId,
-      preAuthSessionId: response.preAuthSessionId,
-      userInputCode: response.userInputCode,
-    },
-  });
 });
