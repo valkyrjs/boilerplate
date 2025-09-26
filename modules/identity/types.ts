@@ -3,8 +3,8 @@ import "@platform/storage";
 
 import type { Session } from "better-auth";
 
-import type { AccessControlMethods } from "./access.ts";
-import type { Principal } from "./principal.ts";
+import type { identity } from "./client.ts";
+import type { Principal } from "./models/principal.ts";
 
 declare module "@platform/storage" {
   interface StorageContext {
@@ -21,7 +21,7 @@ declare module "@platform/storage" {
     /**
      * TODO ...
      */
-    access?: AccessControlMethods;
+    access?: typeof identity.access;
   }
 }
 
@@ -45,6 +45,6 @@ declare module "@platform/relay" {
     /**
      * TODO ...
      */
-    access: AccessControlMethods;
+    access: typeof identity.access;
   }
 }

@@ -3,7 +3,7 @@
 import type { ZodObject, ZodType } from "zod";
 
 import type { RelayAdapter, RelayInput, RelayResponse } from "./adapter.ts";
-import { Route, type Routes } from "./route.ts";
+import { Route, type RouteFn, type Routes } from "./route.ts";
 
 /**
  * Factory method for generating a new relay client instance.
@@ -20,6 +20,8 @@ export function makeClient<TRoutes extends Routes>(config: Config, routes: TRout
     const route = routes[key];
     if (route instanceof Route) {
       client[key] = getRouteFn(route, config);
+    } else if (typeof route === "function") {
+      client[key] = route;
     } else {
       client[key] = getNestedRoute(config, route);
     }
@@ -39,6 +41,8 @@ function getNestedRoute<TRoutes extends Routes>(config: Config, routes: TRoutes)
     const route = routes[key];
     if (route instanceof Route) {
       nested[key] = getRouteFn(route, config);
+    } else if (typeof route === "function") {
+      nested[key] = route;
     } else {
       nested[key] = getNestedRoute(config, route);
     }
@@ -148,21 +152,25 @@ type RelayRequest = {
 
 type RelayRoutes<TRoutes extends Routes> = {
   [TKey in keyof TRoutes]: TRoutes[TKey] extends Route
-    ? HasPayload<TRoutes[TKey]> extends true
-      ? (
-          payload: Prettify<
-            (TRoutes[TKey]["state"]["params"] extends ZodObject ? { params: TRoutes[TKey]["$params"] } : {}) &
-              (TRoutes[TKey]["state"]["query"] extends ZodObject ? { query: TRoutes[TKey]["$query"] } : {}) &
-              (TRoutes[TKey]["state"]["body"] extends ZodType ? { body: TRoutes[TKey]["$body"] } : {}) & {
-                headers?: HeadersInit;
-              }
-          >,
-        ) => RouteResponse<TRoutes[TKey]>
-      : (payload?: { headers: HeadersInit }) => RouteResponse<TRoutes[TKey]>
-    : TRoutes[TKey] extends Routes
-      ? RelayRoutes<TRoutes[TKey]>
-      : never;
+    ? ClientRoute<TRoutes[TKey]>
+    : TRoutes[TKey] extends RouteFn
+      ? TRoutes[TKey]
+      : TRoutes[TKey] extends Routes
+        ? RelayRoutes<TRoutes[TKey]>
+        : never;
 };
+
+type ClientRoute<TRoute extends Route> = HasPayload<TRoute> extends true
+  ? (
+      payload: Prettify<
+        (TRoute["state"]["params"] extends ZodObject ? { params: TRoute["$params"] } : {}) &
+          (TRoute["state"]["query"] extends ZodObject ? { query: TRoute["$query"] } : {}) &
+          (TRoute["state"]["body"] extends ZodType ? { body: TRoute["$body"] } : {}) & {
+            headers?: HeadersInit;
+          }
+      >,
+    ) => RouteResponse<TRoute>
+  : (payload?: { headers: HeadersInit }) => RouteResponse<TRoute>;
 
 type HasPayload<TRoute extends Route> = TRoute["state"]["params"] extends ZodObject
   ? true

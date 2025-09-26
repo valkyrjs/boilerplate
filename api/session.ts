@@ -1,6 +1,5 @@
-import "@modules/identity/server.ts";
-
-import { getAccessControlMethods, identity } from "@modules/identity/server.ts";
+import { identity } from "@modules/identity/client.ts";
+import { getPrincipalSession } from "@modules/identity/server.ts";
 import { context, UnauthorizedError } from "@platform/relay";
 import { storage } from "@platform/storage";
 
@@ -92,7 +91,7 @@ async function resolvePrincipalSession(request: Request) {
   // Fetch session from identity module and tag it as a resolution
   // call so it can break out of a resolution loop.
 
-  const session = await identity.resolve({
+  const session = await getPrincipalSession({
     headers: new Headers({
       cookie,
       [IDENTITY_RESOLVE_HEADER]: "true",
@@ -102,13 +101,13 @@ async function resolvePrincipalSession(request: Request) {
   // ### Populate Context
   // On successfull resolution we build the request identity context.
 
-  if ("data" in session) {
+  if (session !== undefined) {
     const context = storage.getStore();
     if (context === undefined) {
       return;
     }
-    context.session = session.data.session;
-    context.principal = session.data.principal;
-    context.access = getAccessControlMethods(session.data.principal);
+    context.session = session.session;
+    context.principal = session.principal;
+    context.access = identity.access;
   }
 }

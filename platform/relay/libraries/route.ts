@@ -443,8 +443,10 @@ export const route: {
  */
 
 export type Routes = {
-  [key: string]: Routes | Route;
+  [key: string]: Routes | Route | RouteFn;
 };
+
+export type RouteFn = (...args: any[]) => any;
 
 type RouteState = {
   method: RouteMethod;

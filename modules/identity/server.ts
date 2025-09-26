@@ -9,7 +9,7 @@ import resolve from "./routes/session/resolve/spec.ts";
  |--------------------------------------------------------------------------------
  */
 
-export const identity = makeClient(
+const identity = makeClient(
   {
     adapter: new HttpAdapter({
       url: config.url,
@@ -22,13 +22,19 @@ export const identity = makeClient(
   },
 );
 
+export async function getPrincipalSession(payload: { headers: Headers }) {
+  const response = await identity.resolve(payload);
+  if ("data" in response) {
+    return response.data;
+  }
+}
+
 /*
  |--------------------------------------------------------------------------------
  | Server Exports
  |--------------------------------------------------------------------------------
  */
 
-export * from "./services/access.ts";
 export * from "./services/session.ts";
 export * from "./types.ts";
 
@@ -49,5 +55,8 @@ export default {
     (await import("./routes/me/handle.ts")).default,
     (await import("./routes/roles/handle.ts")).default,
     (await import("./routes/session/resolve/handle.ts")).default,
+    (await import("./routes/access/is-allowed/handle.ts")).default,
+    (await import("./routes/access/check-resource/handle.ts")).default,
+    (await import("./routes/access/check-resources/handle.ts")).default,
   ],
 };
