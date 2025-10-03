@@ -9,6 +9,7 @@
   },
   "types": "types.d.ts",
   "dependencies": {
+    "@modules/iam": "workspace:*",
     "@platform/database": "workspace:*",
     "@platform/relay": "workspace:*",
     "@platform/spec": "workspace:*",

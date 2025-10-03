@@ -1,4 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type ServerContext = {};
+export interface ServerContext {
+  id: string;
+}
 
 export const context: ServerContext = {} as any;

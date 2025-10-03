@@ -4,7 +4,7 @@
   "workspace": [
     "api",
     "apps/react",
-    "modules/identity",
+    "modules/iam",
     "modules/workspace",
     "platform/config",
     "platform/database",
@@ -17,8 +17,9 @@
     "platform/vault"
   ],
   "imports": {
-    "@modules/identity/client.ts": "./modules/identity/client.ts",
-    "@modules/identity/server.ts": "./modules/identity/server.ts",
+    "@modules/iam/client.ts": "./modules/iam/client.ts",
+    "@modules/iam/server.ts": "./modules/iam/server.ts",
+    "@modules/iam/types.ts": "./modules/iam/types.ts",
     "@modules/workspace/client.ts": "./modules/workspace/client.ts",
     "@modules/workspace/server.ts": "./modules/workspace/server.ts",
     "@platform/config/": "./platform/config/",

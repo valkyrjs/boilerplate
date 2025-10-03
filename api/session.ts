@@ -1,4 +1,4 @@
-import { identity } from "@modules/identity/client.ts";
+import { identity } from "@modules/iam/client.ts";
 import { getPrincipalSession } from "@modules/identity/server.ts";
 import { context, UnauthorizedError } from "@platform/relay";
 import { storage } from "@platform/storage";

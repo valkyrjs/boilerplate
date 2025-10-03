@@ -2370,7 +2370,7 @@
           ]
         }
       },
-      "modules/identity": {
+      "modules/iam": {
         "packageJson": {
           "dependencies": [
             "npm:@cerbos/core@0.24.1",

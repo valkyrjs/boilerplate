@@ -17,5 +17,6 @@ export function getStorageContext(): StorageContext {
   return store;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type StorageContext = {};
+export interface StorageContext {
+  id: string;
+}

@@ -1,6 +1,7 @@
 import { idIndex } from "@platform/database/id.ts";
 import { register as registerReadStore } from "@platform/database/registrar.ts";
 import { register as registerEventStore } from "@valkyr/event-store/mongo";
+import "@modules/iam/types.ts";
 
 import { db } from "./database.ts";
 import { eventStore } from "./event-store.ts";
