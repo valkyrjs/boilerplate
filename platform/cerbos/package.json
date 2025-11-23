@@ -1,0 +1,10 @@
+{
+  "name": "@platform/cerbos",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@cerbos/core": "0.25.1",
+    "@cerbos/http": "0.23.3"
+  }
+}

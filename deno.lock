@@ -4,7 +4,9 @@
     "npm:@biomejs/biome@*": "2.2.4",
     "npm:@biomejs/biome@2.2.4": "2.2.4",
     "npm:@cerbos/core@0.24.1": "0.24.1",
+    "npm:@cerbos/core@0.25.1": "0.25.1_@bufbuild+protobuf@2.10.1",
     "npm:@cerbos/http@0.23.1": "0.23.1",
+    "npm:@cerbos/http@0.23.3": "0.23.3_@bufbuild+protobuf@2.10.1_@cerbos+api@0.2.0",
     "npm:@eslint/js@9.35.0": "9.35.0",
     "npm:@jsr/std__assert@1.0.14": "1.0.14",
     "npm:@jsr/std__dotenv@0.225.5": "0.225.5",
@@ -14,14 +16,14 @@
     "npm:@jsr/valkyr__event-store@2.0.1": "2.0.1",
     "npm:@jsr/valkyr__inverse@1.0.1": "1.0.1",
     "npm:@jsr/valkyr__json-rpc@1.1.0": "1.1.0",
-    "npm:@tailwindcss/vite@4.1.13": "4.1.13_vite@7.1.6__picomatch@4.0.3_@types+node@24.2.0",
+    "npm:@tailwindcss/vite@4.1.13": "4.1.13_vite@7.1.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0",
     "npm:@tanstack/react-query@5.89.0": "5.89.0_react@19.1.1",
     "npm:@tanstack/react-router-devtools@1.131.47": "1.131.47_@tanstack+react-router@1.131.47__react@19.1.1__react-dom@19.1.1___react@19.1.1_react@19.1.1_react-dom@19.1.1__react@19.1.1",
     "npm:@tanstack/react-router@1.131.47": "1.131.47_react@19.1.1_react-dom@19.1.1__react@19.1.1",
     "npm:@types/node@*": "24.2.0",
     "npm:@types/react-dom@19.1.9": "19.1.9_@types+react@19.1.13",
     "npm:@types/react@19.1.13": "19.1.13",
-    "npm:@vitejs/plugin-react@4.7.0": "4.7.0_vite@7.1.6__picomatch@4.0.3_@babel+core@7.28.4_@types+node@24.2.0",
+    "npm:@vitejs/plugin-react@4.7.0": "4.7.0_vite@7.1.6__@types+node@24.2.0__picomatch@4.0.3_@babel+core@7.28.4_@types+node@24.2.0",
     "npm:better-auth@1.3.16": "1.3.16_react@19.1.1_react-dom@19.1.1__react@19.1.1",
     "npm:cookie@1.0.2": "1.0.2",
     "npm:eslint-plugin-react-hooks@5.2.0": "5.2.0_eslint@9.35.0",
@@ -38,7 +40,7 @@
     "npm:tailwindcss@4.1.13": "4.1.13",
     "npm:typescript-eslint@8.44.0": "8.44.0_eslint@9.35.0_typescript@5.9.2_@typescript-eslint+parser@8.44.0__eslint@9.35.0__typescript@5.9.2",
     "npm:typescript@5.9.2": "5.9.2",
-    "npm:vite@7.1.6": "7.1.6_picomatch@4.0.3_@types+node@24.2.0",
+    "npm:vite@7.1.6": "7.1.6_@types+node@24.2.0_picomatch@4.0.3",
     "npm:zod@4.1.11": "4.1.11"
   },
   "npm": {
@@ -239,16 +241,42 @@
       "os": ["win32"],
       "cpu": ["x64"]
     },
+    "@bufbuild/protobuf@2.10.1": {
+      "integrity": "sha512-ckS3+vyJb5qGpEYv/s1OebUHDi/xSNtfgw1wqKZo7MR9F2z+qXr0q5XagafAG/9O0QPVIUfST0smluYSTpYFkg=="
+    },
+    "@cerbos/api@0.2.0": {
+      "integrity": "sha512-p3kAfmgz0WwxXBJ8Dt1vugV/QjQoPtF5b1R+h16YnUPZ6O4YL8D9gjz5WQRg/0FllodyaEtJlrMPxGEvJetkIw==",
+      "dependencies": [
+        "@bufbuild/protobuf"
+      ]
+    },
     "@cerbos/core@0.24.1": {
       "integrity": "sha512-Gt9ETQR3WDVcPlxN+HiGUDtNgWFulwS5ZjBgzJFsdb7e2GCw0tOPE9Ex1qHNZvG/0JHpFWJWIiYaSKyXcp35YQ==",
       "dependencies": [
         "uuid"
       ]
     },
+    "@cerbos/core@0.25.1_@bufbuild+protobuf@2.10.1": {
+      "integrity": "sha512-aPi8IqqgGHq9xyoBk6dYAKQ1U1athW0YZfI+7lzxxwpLlNFdZ9EwJLhaRSUFgYpUS2TBWDtX094Yn1kgB1esCQ==",
+      "dependencies": [
+        "@bufbuild/protobuf",
+        "@cerbos/api",
+        "uuid"
+      ]
+    },
     "@cerbos/http@0.23.1": {
       "integrity": "sha512-XzWFS6L7M+oUnjGEFIoQygtlmZy3zOpUobN6spGp1MAaT6GQJMRFK8P8xhY2BQjTIhqYgnoiEFOAULTkbgNIjg==",
       "dependencies": [
-        "@cerbos/core",
+        "@cerbos/core@0.24.1",
+        "qs"
+      ]
+    },
+    "@cerbos/http@0.23.3_@bufbuild+protobuf@2.10.1_@cerbos+api@0.2.0": {
+      "integrity": "sha512-yf8s4v+T4sf/ZiLorHpXhdStOr+q5XEjF2m/yvpcR7E/7e5eGCr5yEov9NIgfRQg1HGW8h+B6CIFBl9amSsaGw==",
+      "dependencies": [
+        "@bufbuild/protobuf",
+        "@cerbos/api",
+        "@cerbos/core@0.25.1_@bufbuild+protobuf@2.10.1",
         "qs"
       ]
     },
@@ -891,22 +919,13 @@
       ],
       "scripts": true
     },
-    "@tailwindcss/vite@4.1.13_vite@7.1.6__picomatch@4.0.3": {
+    "@tailwindcss/vite@4.1.13_vite@7.1.6__@types+node@24.2.0__picomatch@4.0.3_@types+node@24.2.0": {
       "integrity": "sha512-0PmqLQ010N58SbMTJ7BVJ4I2xopiQn/5i6nlb4JmxzQf8zcS5+m2Cv6tqh+sfDwtIdjoEnOvwsGQ1hkUi8QEHQ==",
       "dependencies": [
         "@tailwindcss/node",
         "@tailwindcss/oxide",
         "tailwindcss",
-        "vite@7.1.6_picomatch@4.0.3"
-      ]
-    },
-    "@tailwindcss/vite@4.1.13_vite@7.1.6__picomatch@4.0.3_@types+node@24.2.0": {
-      "integrity": "sha512-0PmqLQ010N58SbMTJ7BVJ4I2xopiQn/5i6nlb4JmxzQf8zcS5+m2Cv6tqh+sfDwtIdjoEnOvwsGQ1hkUi8QEHQ==",
-      "dependencies": [
-        "@tailwindcss/node",
-        "@tailwindcss/oxide",
-        "tailwindcss",
-        "vite@7.1.6_picomatch@4.0.3_@types+node@24.2.0"
+        "vite"
       ]
     },
     "@tanstack/history@1.131.2": {
@@ -1140,7 +1159,7 @@
         "eslint-visitor-keys@4.2.1"
       ]
     },
-    "@vitejs/plugin-react@4.7.0_vite@7.1.6__picomatch@4.0.3_@babel+core@7.28.4": {
+    "@vitejs/plugin-react@4.7.0_vite@7.1.6__@types+node@24.2.0__picomatch@4.0.3_@babel+core@7.28.4_@types+node@24.2.0": {
       "integrity": "sha512-gUu9hwfWvvEDBBmgtAowQCojwZmJ5mcLn3aufeCsitijs3+f2NsrPtlAWIR6OPiqljl96GVCUbLe0HyqIpVaoA==",
       "dependencies": [
         "@babel/core",
@@ -1149,19 +1168,7 @@
         "@rolldown/pluginutils",
         "@types/babel__core",
         "react-refresh",
-        "vite@7.1.6_picomatch@4.0.3"
-      ]
-    },
-    "@vitejs/plugin-react@4.7.0_vite@7.1.6__picomatch@4.0.3_@babel+core@7.28.4_@types+node@24.2.0": {
-      "integrity": "sha512-gUu9hwfWvvEDBBmgtAowQCojwZmJ5mcLn3aufeCsitijs3+f2NsrPtlAWIR6OPiqljl96GVCUbLe0HyqIpVaoA==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/plugin-transform-react-jsx-self",
-        "@babel/plugin-transform-react-jsx-source",
-        "@rolldown/pluginutils",
-        "@types/babel__core",
-        "react-refresh",
-        "vite@7.1.6_picomatch@4.0.3_@types+node@24.2.0"
+        "vite"
       ]
     },
     "acorn-jsx@5.3.2_acorn@8.15.0": {
@@ -2259,22 +2266,7 @@
       "integrity": "sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==",
       "bin": true
     },
-    "vite@7.1.6_picomatch@4.0.3": {
-      "integrity": "sha512-SRYIB8t/isTwNn8vMB3MR6E+EQZM/WG1aKmmIUCfDXfVvKfc20ZpamngWHKzAmmu9ppsgxsg4b2I7c90JZudIQ==",
-      "dependencies": [
-        "esbuild",
-        "fdir",
-        "picomatch@4.0.3",
-        "postcss",
-        "rollup",
-        "tinyglobby"
-      ],
-      "optionalDependencies": [
-        "fsevents"
-      ],
-      "bin": true
-    },
-    "vite@7.1.6_picomatch@4.0.3_@types+node@24.2.0": {
+    "vite@7.1.6_@types+node@24.2.0_picomatch@4.0.3": {
       "integrity": "sha512-SRYIB8t/isTwNn8vMB3MR6E+EQZM/WG1aKmmIUCfDXfVvKfc20ZpamngWHKzAmmu9ppsgxsg4b2I7c90JZudIQ==",
       "dependencies": [
         "@types/node",
@@ -2390,6 +2382,14 @@
           ]
         }
       },
+      "platform/cerbos": {
+        "packageJson": {
+          "dependencies": [
+            "npm:@cerbos/core@0.25.1",
+            "npm:@cerbos/http@0.23.3"
+          ]
+        }
+      },
       "platform/config": {
         "packageJson": {
           "dependencies": [
@@ -2419,6 +2419,13 @@
         "packageJson": {
           "dependencies": [
             "npm:path-to-regexp@8",
+            "npm:zod@4.1.11"
+          ]
+        }
+      },
+      "platform/routes": {
+        "packageJson": {
+          "dependencies": [
             "npm:zod@4.1.11"
           ]
         }

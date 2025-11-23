@@ -11,7 +11,7 @@ export const config = {
     port: getEnvironmentVariable({
       key: "DB_MONGO_PORT",
       type: z.coerce.number(),
-      fallback: "27017",
+      fallback: "67017",
     }),
     user: getEnvironmentVariable({
       key: "DB_MONGO_USER",
