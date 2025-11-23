@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "deno --allow-all --watch-hmr=routes/ server.ts"
+  },
+  "dependencies": {
+    "@modules/identity": "workspace:*",
+    "@module/workspace": "workspace:*",
+    "@platform/config": "workspace:*",
+    "zod": "4.1.12"
+  }
+}

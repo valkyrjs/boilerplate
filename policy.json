@@ -1,0 +1,15 @@
+{
+  "$schema": "https://api.cerbos.dev/v0.47.0/cerbos/policy/v1/Policy.schema.json",
+  "apiVersion": "api.cerbos.dev/v1",
+  "resourcePolicy": {
+    "resource": "workspace",
+    "version": "1",
+    "rules": [
+      {
+        "actions": ["create"],
+        "effect": "EFFECT_ALLOW",
+        "roles": ["super"]
+      }
+    ]
+  }
+}

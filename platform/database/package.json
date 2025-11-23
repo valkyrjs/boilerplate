@@ -1,0 +1,11 @@
+{
+  "name": "@platform/database",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@platform/config": "workspace:*",
+    "postgres": "3.4.7",
+    "zod": "4.1.12"
+  }
+}

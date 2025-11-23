@@ -1,23 +1,43 @@
 {
-  "name": "@valkyr/relay",
-  "version": "0.1.0",
-  "exports": {
-    ".": "./mod.ts"
-  },
-  "publish": {
-    "exclude": [
-      ".github",
-      ".vscode",
-      ".gitignore",
-      "tests"
-    ]
-  },
+  "unstable": ["fmt-component"],
+  "nodeModulesDir": "auto",
+  "workspace": [
+    "api",
+    "apps/react",
+    "modules/account",
+    "modules/tenant",
+    "platform/cerbos",
+    "platform/config",
+    "platform/database",
+    "platform/logger",
+    "platform/relay",
+    "platform/routes",
+    "platform/server",
+    "platform/socket",
+    "platform/spec",
+    "platform/storage",
+    "platform/vault"
+  ],
   "tasks": {
-    "check": "deno check ./mod.ts",
-    "lint": "npx eslint -c eslint.config.mjs .",
-    "test": "deno test --allow-all",
-    "test:publish": "deno publish --dry-run",
-    "ncu": "npx ncu -u -p npm"
-  },
-  "nodeModulesDir": "auto"
+    "api": {
+      "command": "cd ./api && deno run start",
+      "description": "Start api server instance."
+    },
+    "react": {
+      "command": "cd ./apps/react && deno run dev",
+      "description": "Start react application instance."
+    },
+    "check": {
+      "command": "deno run -A npm:@biomejs/biome check --write ./api ./apps/react/src ./modules ./platform",
+      "description": "Format, lint, and organize imports of the entire project."
+    },
+    "test": {
+      "command": "deno test --allow-all",
+      "description": "Runs all defined tests across the entire project."
+    },
+    "ncu": {
+      "command": "npx ncu -u -p npm",
+      "description": "Updates all the dependencies in package.json to their latest versions."
+    }
+  }
 }

@@ -1,0 +1,45 @@
+networks:
+  server:
+    name: server
+
+volumes:
+  mongo:
+    driver: local
+
+services:
+
+  # MongoDB
+  # --------------------------------------------------------------------------------
+  # Used by event store and read store for managing and reading application data. 
+
+  mongo:
+    restart: unless-stopped
+    image: mongo:8
+    container_name: boilerplate_mongo
+    ports:
+      - 6017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo:/data/db
+    networks:
+      - server
+
+  # Cerbos
+  # --------------------------------------------------------------------------------
+  # Policy engine for application access control.
+
+  cerbos:
+    restart: unless-stopped
+    image: ghcr.io/cerbos/cerbos:latest
+    container_name: boilerplate_cerbos
+    command: ["server", "--config=/config.yaml"]
+    ports:
+      - 6592:3592
+      - 6593:3593
+      - 6594:3594
+    volumes:
+      - ./cerbos.yaml:/config.yaml
+    networks:
+      - server

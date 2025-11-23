@@ -1,0 +1,11 @@
+{
+  "name": "@platform/spec",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@platform/models": "workspace:*",
+    "@platform/relay": "workspace:*",
+    "zod": "4.1.12"
+  }
+}

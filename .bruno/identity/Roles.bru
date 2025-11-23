@@ -1,0 +1,32 @@
+meta {
+  name: Roles
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{url}}/identity/:id/roles
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+body:json {
+  [
+    {
+      "type": "add",
+      "roles": []
+    },
+    {
+      "type": "remove",
+      "roles": []
+    }
+  ]
+}
+
+settings {
+  encodeUrl: true
+}

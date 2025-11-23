@@ -1,0 +1,14 @@
+{
+  "name": "@platform/socket",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "types.d.ts",
+  "dependencies": {
+    "@platform/auth": "workspace:*",
+    "@platform/logger": "workspace:*",
+    "@platform/relay": "workspace:*",
+    "@platform/storage": "workspace:*",
+    "@valkyr/json-rpc": "npm:@jsr/valkyr__json-rpc@1.1.0"
+  }
+}

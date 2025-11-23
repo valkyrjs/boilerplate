@@ -1,0 +1,14 @@
+{
+  "name": "@module/account",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": "./server.ts",
+    "./client": "./client.ts"
+  },
+  "dependencies": {
+    "@platform/relay": "workspace:*",
+    "zod": "4.1.12"
+  }
+}

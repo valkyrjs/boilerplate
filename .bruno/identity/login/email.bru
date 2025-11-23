@@ -1,0 +1,21 @@
+meta {
+  name: Email
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/identity/login/email
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "john.doe@fixture.none"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
