@@ -1,14 +1,14 @@
 import { useController } from "../../libraries/controller.ts";
+import { LoginForm } from "./components/login-form.tsx";
 import { LoginController } from "./login.controller.ts";
 
 export function LoginView() {
-  const [{ user }, { login, logout }] = useController(LoginController);
+  const [, , { passkey }] = useController(LoginController);
   return (
-    <div>
-      <button type="button" onClick={() => (user === undefined ? login() : logout())}>
-        {user === undefined ? "Login" : "Logout"}
-      </button>
-      {user !== undefined ? <pre>{JSON.stringify(user, null, 2)}</pre> : null}
+    <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <LoginForm passkey={passkey} />
+      </div>
     </div>
   );
 }
