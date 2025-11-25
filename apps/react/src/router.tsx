@@ -1,5 +1,6 @@
-import { createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
+import { createRootRoute, createRoute, createRouter, redirect } from "@tanstack/react-router";
 
+import { zitadel } from "./services/zitadel.ts";
 import { AppView } from "./views/app.view.tsx";
 import { CallbackView } from "./views/auth/callback.view.tsx";
 import { LoginView } from "./views/auth/login.view.tsx";
@@ -22,6 +23,15 @@ const login = createRoute({
 const app = createRoute({
   id: "app",
   getParentRoute: () => root,
+  beforeLoad: async () => {
+    const user = await zitadel.userManager.getUser();
+    if (user === null) {
+      throw redirect({ to: "/login" });
+    }
+    if (user.expired === true) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: AppView,
 });
 

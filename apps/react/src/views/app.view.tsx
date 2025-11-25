@@ -3,18 +3,8 @@ import { Outlet } from "@tanstack/react-router";
 import { AppSidebar } from "@/components/app-sidebar.tsx";
 import { SiteHeader } from "@/components/site-header.tsx";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar.tsx";
-import { useController } from "@/libraries/controller.ts";
-
-import { AppController } from "./app.controller.ts";
 
 export function AppView() {
-  const [{ authenticated }, loading] = useController(AppController);
-  if (loading === true) {
-    return <div>Loading ...</div>;
-  }
-  if (authenticated === false) {
-    return <div>Unauthenticated</div>;
-  }
   return (
     <SidebarProvider
       style={

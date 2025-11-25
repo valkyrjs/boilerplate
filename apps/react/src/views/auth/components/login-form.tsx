@@ -1,24 +1,17 @@
 import { GalleryVerticalEnd } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { Field, FieldDescription, FieldGroup, FieldSeparator } from "@/components/ui/field";
 import { cn } from "@/libraries/utils";
+import { zitadel } from "@/services/zitadel.ts";
 
-export function LoginForm({
-  className,
-  passkey,
-  ...props
-}: { passkey: (email: string) => Promise<void> } & React.ComponentProps<"div">) {
+export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          const email = e.currentTarget.elements.namedItem("email");
-          if (email instanceof HTMLInputElement) {
-            passkey(email.value);
-          }
+          zitadel.authorize();
         }}
       >
         <FieldGroup>
@@ -35,11 +28,7 @@ export function LoginForm({
             </FieldDescription>
           </div>
           <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input id="email" type="email" placeholder="m@example.com" required />
-          </Field>
-          <Field>
-            <Button type="submit">Login</Button>
+            <Button type="submit">Login with Zitadel</Button>
           </Field>
           <FieldSeparator>Or</FieldSeparator>
           <Field className="grid gap-4 sm:grid-cols-2">

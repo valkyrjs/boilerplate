@@ -17,10 +17,6 @@ export class NavUserController extends Controller<{
     }
   }
 
-  authorize() {
-    zitadel.authorize();
-  }
-
   signout() {
     zitadel.signout();
   }
