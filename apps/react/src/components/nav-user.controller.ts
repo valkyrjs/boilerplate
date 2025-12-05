@@ -1,8 +1,8 @@
-import { Controller } from "../libraries/controller.ts";
+import { Controller } from "../libraries/controller.tsx";
 import { type User as ZitadelUser, zitadel } from "../services/zitadel.ts";
 
 export class NavUserController extends Controller<{
-  user?: User;
+  user: User;
 }> {
   async onInit() {
     return {
@@ -10,11 +10,12 @@ export class NavUserController extends Controller<{
     };
   }
 
-  async #getAuthenticatedUser(): Promise<User | undefined> {
+  async #getAuthenticatedUser(): Promise<User> {
     const user = await zitadel.userManager.getUser();
-    if (user !== null) {
-      return getUserProfile(user);
+    if (user === null) {
+      throw new Error("Failed to resolve user session");
     }
+    return getUserProfile(user);
   }
 
   signout() {

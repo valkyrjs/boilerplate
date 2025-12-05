@@ -1,0 +1,20 @@
+meta {
+  name: Wallets
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/payment/ledgers/:id/wallets
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 3c71d240-a375-42e1-9a78-0575bf33fabb
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

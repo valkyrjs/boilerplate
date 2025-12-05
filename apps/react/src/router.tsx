@@ -10,7 +10,7 @@ const root = createRootRoute();
 
 const callback = createRoute({
   getParentRoute: () => root,
-  path: "/callback",
+  path: "/auth/callback",
   component: CallbackView,
 });
 

@@ -1,0 +1,24 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/payment/accounts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "walletId": "56f2aba8-5687-4e63-8d6a-e120b50ef891",
+    "currency": "NOK",
+    "label": "NOK Savings"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

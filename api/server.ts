@@ -1,3 +1,4 @@
+import payment from "@module/payment/server";
 import { logger } from "@platform/logger";
 import { context } from "@platform/relay";
 import { Api } from "@platform/server/api.ts";
@@ -19,8 +20,8 @@ const log = logger.prefix("Server");
 // ### Platform
 
 await server.bootstrap();
-await socket.bootstrap();
-await session.bootstrap();
+// await socket.bootstrap();
+// await session.bootstrap();
 
 // ### Modules
 
@@ -33,6 +34,7 @@ await session.bootstrap();
  */
 
 const api = new Api([
+  ...payment.routes,
   /*...identity.routes, ...workspace.routes*/
 ]);
 
@@ -58,8 +60,8 @@ Deno.serve(
       // Resolve storage context for all dependent modules.
 
       await server.resolve(request);
-      await socket.resolve();
-      await session.resolve(request);
+      // await socket.resolve();
+      // await session.resolve(request);
 
       // ### Fetch
       // Execute fetch against the api instance.

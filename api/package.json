@@ -4,9 +4,8 @@
     "start": "deno --allow-all --watch-hmr=routes/ server.ts"
   },
   "dependencies": {
-    "@modules/identity": "workspace:*",
-    "@module/workspace": "workspace:*",
+    "@module/payment": "workspace:*",
     "@platform/config": "workspace:*",
-    "zod": "4.1.12"
+    "zod": "4.1.13"
   }
 }

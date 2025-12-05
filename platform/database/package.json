@@ -3,9 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./mod.ts",
+  "exports": {
+    ".": "./mod.ts"
+  },
   "dependencies": {
     "@platform/config": "workspace:*",
+    "@platform/parse": "workspace:*",
+    "@types/transit-js": "0.8.3",
     "postgres": "3.4.7",
-    "zod": "4.1.12"
+    "transit-js": "0.8.874",
+    "zod": "4.1.13"
   }
 }

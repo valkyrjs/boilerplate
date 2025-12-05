@@ -1,10 +1,8 @@
-import { load } from "@std/dotenv";
 import type { ZodType, z } from "zod";
 
+import { getDotEnvVariable } from "./dotenv.ts";
 import { InvalidEnvironmentKeyError } from "./errors.ts";
 import { getServiceEnvironment, type ServiceEnvironment } from "./service.ts";
-
-const env = await load();
 
 /**
  * TODO ...
@@ -21,7 +19,7 @@ export function getEnvironmentVariable<TType extends ZodType>({
   fallback?: string;
 }): z.infer<TType> {
   const serviceEnv = getServiceEnvironment();
-  const providedValue = env[key] ?? Deno.env.get(key);
+  const providedValue = getDotEnvVariable(key);
   const fallbackValue = typeof envFallback === "object" ? (envFallback[serviceEnv] ?? fallback) : fallback;
   const toBeUsed = providedValue ?? fallbackValue;
   try {
