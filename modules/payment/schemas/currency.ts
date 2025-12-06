@@ -9,16 +9,18 @@ import z from "zod";
  |
  */
 
+export const currencies = ["USD", "EUR", "GBP", "CHF", "JPY", "CAD", "AUD", "NOK", "SEK"] as const;
+
 export const CurrencySchema = z.union([
-  z.literal("USD").describe("United States Dollar"),
-  z.literal("EUR").describe("Euro"),
-  z.literal("GBP").describe("British Pound Sterling"),
-  z.literal("CHF").describe("Swiss Franc"),
-  z.literal("JPY").describe("Japanese Yen"),
-  z.literal("CAD").describe("Canadian Dollar"),
-  z.literal("AUD").describe("Australian Dollar"),
-  z.literal("NOK").describe("Norwegian Krone"),
-  z.literal("SEK").describe("Swedish Krona"),
+  z.literal(currencies[0]).describe("United States Dollar"),
+  z.literal(currencies[1]).describe("Euro"),
+  z.literal(currencies[2]).describe("British Pound Sterling"),
+  z.literal(currencies[3]).describe("Swiss Franc"),
+  z.literal(currencies[4]).describe("Japanese Yen"),
+  z.literal(currencies[5]).describe("Canadian Dollar"),
+  z.literal(currencies[6]).describe("Australian Dollar"),
+  z.literal(currencies[7]).describe("Norwegian Krone"),
+  z.literal(currencies[8]).describe("Swedish Krona"),
 ]);
 
 export type Currency = z.output<typeof CurrencySchema>;

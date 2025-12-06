@@ -12,16 +12,19 @@
     "npm:@jsr/std__assert@1.0.14": "1.0.14",
     "npm:@jsr/std__dotenv@0.225.5": "0.225.5",
     "npm:@jsr/std__testing@1.0.15": "1.0.15",
+    "npm:@jsr/valkyr__db@2.0.0": "2.0.0",
     "npm:@jsr/valkyr__event-store@2.0.1": "2.0.1",
     "npm:@jsr/valkyr__json-rpc@1.1.0": "1.1.0",
     "npm:@radix-ui/react-avatar@1.1.11": "1.1.11_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-checkbox@1.3.3": "1.3.3_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
-    "npm:@radix-ui/react-dialog@1.1.15": "1.1.15_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
+    "npm:@radix-ui/react-collapsible@^1.1.12": "1.1.12_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
+    "npm:@radix-ui/react-dialog@^1.1.15": "1.1.15_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-dropdown-menu@2.1.16": "2.1.16_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-label@2.1.8": "2.1.8_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
+    "npm:@radix-ui/react-popover@^1.1.15": "1.1.15_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-select@2.2.6": "2.2.6_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-separator@1.1.8": "1.1.8_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
-    "npm:@radix-ui/react-slot@1.2.4": "1.2.4_@types+react@19.2.7_react@19.2.0",
+    "npm:@radix-ui/react-slot@^1.2.4": "1.2.4_@types+react@19.2.7_react@19.2.0",
     "npm:@radix-ui/react-tabs@1.1.13": "1.1.13_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-toggle-group@1.1.11": "1.1.11_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:@radix-ui/react-toggle@1.1.10": "1.1.10_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
@@ -39,6 +42,7 @@
     "npm:babel-plugin-react-compiler@1.0.0": "1.0.0",
     "npm:class-variance-authority@0.7.1": "0.7.1",
     "npm:clsx@2.1.1": "2.1.1",
+    "npm:cmdk@^1.1.1": "1.1.1_react@19.2.0_react-dom@19.2.0__react@19.2.0_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7",
     "npm:eslint-plugin-react-hooks@7.0.1": "7.0.1_eslint@9.39.1_zod@4.1.13",
     "npm:eslint-plugin-react-refresh@0.4.24": "0.4.24_eslint@9.39.1",
     "npm:eslint@9.39.1": "9.39.1",
@@ -765,6 +769,27 @@
         "@types/react-dom"
       ]
     },
+    "@radix-ui/react-collapsible@1.1.12_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0": {
+      "integrity": "sha512-Uu+mSh4agx2ib1uIGPP4/CKNULyajb3p92LsVXmH2EHVMTfZWpll88XJ0j4W0z3f8NK1eYl1+Mf/szHPmcHzyA==",
+      "dependencies": [
+        "@radix-ui/primitive",
+        "@radix-ui/react-compose-refs",
+        "@radix-ui/react-context@1.1.2_@types+react@19.2.7_react@19.2.0",
+        "@radix-ui/react-id",
+        "@radix-ui/react-presence",
+        "@radix-ui/react-primitive@2.1.3_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
+        "@radix-ui/react-use-controllable-state",
+        "@radix-ui/react-use-layout-effect",
+        "@types/react",
+        "@types/react-dom",
+        "react",
+        "react-dom"
+      ],
+      "optionalPeers": [
+        "@types/react",
+        "@types/react-dom"
+      ]
+    },
     "@radix-ui/react-collection@1.1.7_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0": {
       "integrity": "sha512-Fh9rGN0MoI4ZFUNyfFVNU4y9LUz93u9/0K+yLgA2bwRojxM8JU1DyvvMBabnZPBgMWREAJvU2jjVzq+LrFUglw==",
       "dependencies": [
@@ -957,6 +982,34 @@
         "@radix-ui/react-roving-focus",
         "@radix-ui/react-slot@1.2.3_@types+react@19.2.7_react@19.2.0",
         "@radix-ui/react-use-callback-ref",
+        "@types/react",
+        "@types/react-dom",
+        "aria-hidden",
+        "react",
+        "react-dom",
+        "react-remove-scroll"
+      ],
+      "optionalPeers": [
+        "@types/react",
+        "@types/react-dom"
+      ]
+    },
+    "@radix-ui/react-popover@1.1.15_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0": {
+      "integrity": "sha512-kr0X2+6Yy/vJzLYJUPCZEc8SfQcf+1COFoAqauJm74umQhta9M7lNJHP7QQS3vkvcGLQUbWpMzwrXYwrYztHKA==",
+      "dependencies": [
+        "@radix-ui/primitive",
+        "@radix-ui/react-compose-refs",
+        "@radix-ui/react-context@1.1.2_@types+react@19.2.7_react@19.2.0",
+        "@radix-ui/react-dismissable-layer",
+        "@radix-ui/react-focus-guards",
+        "@radix-ui/react-focus-scope",
+        "@radix-ui/react-id",
+        "@radix-ui/react-popper",
+        "@radix-ui/react-portal",
+        "@radix-ui/react-presence",
+        "@radix-ui/react-primitive@2.1.3_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
+        "@radix-ui/react-slot@1.2.3_@types+react@19.2.7_react@19.2.0",
+        "@radix-ui/react-use-controllable-state",
         "@types/react",
         "@types/react-dom",
         "aria-hidden",
@@ -1943,6 +1996,17 @@
     },
     "clsx@2.1.1": {
       "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="
+    },
+    "cmdk@1.1.1_react@19.2.0_react-dom@19.2.0__react@19.2.0_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7": {
+      "integrity": "sha512-Vsv7kFaXm+ptHDMZ7izaRsP70GgrW9NBNGswt9OZaVBLlE0SNpDq8eu/VGXyF9r7M0azK3Wy7OlYXsuyYLFzHg==",
+      "dependencies": [
+        "@radix-ui/react-compose-refs",
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-id",
+        "@radix-ui/react-primitive@2.1.4_@types+react@19.2.7_@types+react-dom@19.2.3__@types+react@19.2.7_react@19.2.0_react-dom@19.2.0__react@19.2.0",
+        "react",
+        "react-dom"
+      ]
     },
     "color-convert@2.0.1": {
       "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
@@ -3209,14 +3273,17 @@
             "npm:@dnd-kit/sortable@10.0.0",
             "npm:@dnd-kit/utilities@3.2.2",
             "npm:@eslint/js@9.39.1",
+            "npm:@jsr/valkyr__db@2.0.0",
             "npm:@radix-ui/react-avatar@1.1.11",
             "npm:@radix-ui/react-checkbox@1.3.3",
-            "npm:@radix-ui/react-dialog@1.1.15",
+            "npm:@radix-ui/react-collapsible@^1.1.12",
+            "npm:@radix-ui/react-dialog@^1.1.15",
             "npm:@radix-ui/react-dropdown-menu@2.1.16",
             "npm:@radix-ui/react-label@2.1.8",
+            "npm:@radix-ui/react-popover@^1.1.15",
             "npm:@radix-ui/react-select@2.2.6",
             "npm:@radix-ui/react-separator@1.1.8",
-            "npm:@radix-ui/react-slot@1.2.4",
+            "npm:@radix-ui/react-slot@^1.2.4",
             "npm:@radix-ui/react-tabs@1.1.13",
             "npm:@radix-ui/react-toggle-group@1.1.11",
             "npm:@radix-ui/react-toggle@1.1.10",
@@ -3233,6 +3300,7 @@
             "npm:babel-plugin-react-compiler@1.0.0",
             "npm:class-variance-authority@0.7.1",
             "npm:clsx@2.1.1",
+            "npm:cmdk@^1.1.1",
             "npm:eslint-plugin-react-hooks@7.0.1",
             "npm:eslint-plugin-react-refresh@0.4.24",
             "npm:eslint@9.39.1",
@@ -3262,6 +3330,13 @@
         }
       },
       "modules/payment": {
+        "packageJson": {
+          "dependencies": [
+            "npm:zod@4.1.13"
+          ]
+        }
+      },
+      "modules/tenant": {
         "packageJson": {
           "dependencies": [
             "npm:zod@4.1.13"

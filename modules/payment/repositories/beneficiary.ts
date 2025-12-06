@@ -1,5 +1,4 @@
 import { db } from "@platform/database";
-import { ConflictError } from "@platform/relay";
 
 import {
   type Beneficiary,
@@ -16,19 +15,9 @@ import {
  * @param values - Beneficiary values to insert.
  */
 export async function createBeneficiary({ tenantId, label }: BeneficiaryInsert): Promise<string> {
-  return db
-    .begin(async () => {
-      const _id = crypto.randomUUID();
-      await db.sql`ASSERT NOT EXISTS (SELECT 1 FROM payment.beneficiary WHERE "tenantId" = ${db.text(tenantId)}), 'duplicate_tenant'`;
-      await db.sql`INSERT INTO payment.beneficiary RECORDS ${db.transit({ _id, ...BeneficiaryInsertSchema.parse({ tenantId, label }) })}`;
-      return _id;
-    })
-    .catch((error) => {
-      if (error instanceof Error && error.message === "duplicate_tenant") {
-        throw new ConflictError(`Tenant '${tenantId}' already has a beneficiary`);
-      }
-      throw error;
-    });
+  const _id = crypto.randomUUID();
+  await db.sql`INSERT INTO payment.beneficiary RECORDS ${db.transit({ _id, ...BeneficiaryInsertSchema.parse({ tenantId, label }) })}`;
+  return _id;
 }
 
 /**

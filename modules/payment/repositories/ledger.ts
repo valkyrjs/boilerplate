@@ -30,7 +30,9 @@ export async function createLedger(values: LedgerInsert): Promise<string> {
     })
     .catch((error) => {
       if (error instanceof Error && error.message === "missing_beneficiary") {
-        throw new BadRequestError(`Benficiary '${values.beneficiaryId}' does not exist`);
+        throw new BadRequestError(`Benficiary '${values.beneficiaryId}' does not exist`, {
+          input: "beneficiary",
+        });
       }
       throw error;
     });

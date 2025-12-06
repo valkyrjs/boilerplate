@@ -174,7 +174,7 @@ export function makeControllerComponent<TController extends new (...args: any[])
   >,
   LoadingComponent?: FunctionComponent<PropsWithChildren>,
   ErrorComponent?: FunctionComponent<PropsWithChildren<{ error: Error }>>,
-) {
+): FunctionComponent<PropsWithChildren<InstanceType<TController>["$props"]>> {
   const container: FunctionComponent<PropsWithChildren> = (props: any) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>();

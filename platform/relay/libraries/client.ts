@@ -131,6 +131,7 @@ async function toParsedArgs(
 ): Promise<Record<string, string | number | boolean>> {
   const result = await zod.safeParseAsync(args);
   if (result.success === false) {
+    console.error(msg, args, result.error);
     throw new Error(msg);
   }
   return result.data as Record<string, string | number | boolean>;

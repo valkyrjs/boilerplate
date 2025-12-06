@@ -12,5 +12,5 @@ export const DashboardSchema = z.strictObject({
 
 export default route
   .get("/api/v1/payment/dashboard/:id")
-  .params({ id: BeneficiarySchema.shape._id })
-  .response(DashboardSchema);
+  .params({ id: BeneficiarySchema.shape.tenantId })
+  .response(z.array(DashboardSchema));

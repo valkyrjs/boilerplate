@@ -1,5 +1,6 @@
 import { route } from "@platform/relay";
+import z from "zod";
 
-import { BeneficiaryInsertSchema, BeneficiarySchema } from "../../../schemas/beneficiary.ts";
+import { BeneficiaryInsertSchema } from "../../../schemas/beneficiary.ts";
 
-export default route.post("/api/v1/payment/beneficiaries").body(BeneficiaryInsertSchema).response(BeneficiarySchema);
+export default route.post("/api/v1/payment/beneficiaries").body(BeneficiaryInsertSchema).response(z.uuid());

@@ -6,6 +6,8 @@ import { LoginView } from "@/app/auth/login.view.tsx";
 import { DashboardView } from "@/app/dashboard/dashboard.view.tsx";
 import { zitadel } from "@/services/zitadel.ts";
 
+import { PaymentDashboardView } from "../app/payment/dashboard/dashboard.view.tsx";
+
 const root = createRootRoute();
 
 const callback = createRoute({
@@ -41,7 +43,15 @@ const dashboard = createRoute({
   component: DashboardView,
 });
 
+const payment = [
+  createRoute({
+    getParentRoute: () => app,
+    path: "/payment",
+    component: PaymentDashboardView,
+  }),
+];
+
 root.addChildren([app, login, callback]);
-app.addChildren([dashboard]);
+app.addChildren([dashboard, ...payment]);
 
 export const router = createRouter({ routeTree: root });

@@ -7,6 +7,74 @@ import {
 } from "../libraries/adapter.ts";
 import { ServerError, type ServerErrorType } from "../libraries/errors.ts";
 
+class HttpReadQueue {
+  #cache = new Map<string, any>();
+
+  #queue: {
+    [url: string]: {
+      cb: () => Promise<any>;
+      resolve: (value: any) => void;
+    }[];
+  } = {};
+
+  #processing = new Set<string>();
+
+  async push<TCallback extends () => Promise<any>>(url: string, cb: TCallback) {
+    return new Promise<any>((resolve) => {
+      if (this.#queue[url] === undefined) {
+        this.#queue[url] = [];
+      }
+      this.#queue[url].push({
+        cb,
+        resolve,
+      });
+      this.process(url);
+    });
+  }
+
+  async process(url: string) {
+    const cachedResponse = this.#cache.get(url);
+    if (cachedResponse !== undefined) {
+      return this.drain(url);
+    }
+
+    if (this.#processing.has(url) === true) {
+      return;
+    }
+
+    const job = this.#queue[url]?.shift();
+    if (job === undefined) {
+      return this.#processing.delete(url);
+    }
+
+    this.#processing.add(url);
+
+    const result = await job.cb();
+    this.#cache.set(url, result);
+    job.resolve(result);
+
+    this.drain(url);
+
+    setTimeout(() => {
+      this.#cache.delete(url);
+    }, 1000);
+
+    return this.#processing.delete(url);
+  }
+
+  drain(url: string) {
+    const cache = this.#cache.get(url);
+    if (cache === undefined) {
+      return;
+    }
+    const job = this.#queue[url]?.shift();
+    if (job !== undefined) {
+      job.resolve(cache);
+      this.drain(url);
+    }
+  }
+}
+
 /**
  * HttpAdapter provides a unified transport layer for Relay.
  *
@@ -37,6 +105,8 @@ import { ServerError, type ServerErrorType } from "../libraries/errors.ts";
  * ```
  */
 export class HttpAdapter implements RelayAdapter {
+  readonly #queue = new HttpReadQueue();
+
   /**
    * Instantiate a new HttpAdapter instance.
    *
@@ -92,7 +162,15 @@ export class HttpAdapter implements RelayAdapter {
 
     // ### Response
 
-    return this.request(`${endpoint}${query}`, init);
+    const url = `${endpoint}${query}`;
+
+    if (method === "GET") {
+      return this.#queue.push(url, () => {
+        return this.request(url, init);
+      });
+    }
+
+    return this.request(url, init);
   }
 
   /**
