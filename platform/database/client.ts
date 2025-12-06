@@ -1,5 +1,4 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import { serialize } from "node:v8";
 
 import { takeAll, takeOne } from "@platform/parse";
 import postgres, { type Options, type Sql, type TransactionSql } from "postgres";
@@ -9,7 +8,16 @@ import type { ZodType } from "zod";
 const storage = new AsyncLocalStorage<TransactionSql>();
 
 const transitReader = transit.reader("json");
-const transitWriter = transit.writer("json");
+const transitWriter = transit.writer("json", {
+  handlers: transit.map([
+    Array,
+    transit.makeWriteHandler({
+      tag: () => "array",
+      rep: (arr) => arr,
+      stringRep: () => null,
+    }),
+  ]),
+});
 
 /*
  |--------------------------------------------------------------------------------
@@ -66,6 +74,8 @@ export class Client {
     if (this.#db === undefined) {
       this.#db = postgres({
         ...this.config,
+        transform: postgres.camel,
+        fetch_types: false,
         connection: {
           fallback_output_format: "transit",
         },
@@ -80,6 +90,15 @@ export class Client {
               return transitReader.read(value);
             },
           },
+          bool: {
+            to: 16,
+          } as unknown as postgres.PostgresType,
+          textArray: {
+            from: [1009],
+            parse: (value: unknown) => {
+              return parsePgArray(value);
+            },
+          } as unknown as postgres.PostgresType,
           int64: {
             from: [20],
             parse: (value: string) => {
@@ -89,6 +108,11 @@ export class Client {
               }
               return res;
             },
+          } as unknown as postgres.PostgresType,
+          int: {
+            to: 20,
+            from: [23, 20],
+            parse: parseInt,
           } as unknown as postgres.PostgresType,
         },
       });
@@ -167,9 +191,25 @@ export class Client {
     return this.sql.typed(value, 701);
   }
 
+  array(value: string[]) {
+    return this.sql.unsafe(`ARRAY[${value.map((v) => `'${v.replace(/'/g, "''")}'`).join(",")}]`);
+  }
+
   transit(value: object) {
     return this.sql.typed(value, 16384);
   }
+}
+
+function parsePgArray(value: unknown) {
+  if (typeof value !== "string") {
+    return value;
+  }
+  if (value.startsWith("{") && value.endsWith("}")) {
+    const content = value.slice(1, -1);
+    // Split by comma and strip quotes from each element
+    return content ? content.split(",").map((v) => v.trim().replace(/^"|"$/g, "")) : [];
+  }
+  return value;
 }
 
 /*
