@@ -13,6 +13,6 @@
     "@types/transit-js": "0.8.3",
     "postgres": "3.4.7",
     "transit-js": "0.8.874",
-    "zod": "4.1.13"
+    "zod": "4.3.5"
   }
 }

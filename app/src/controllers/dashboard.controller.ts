@@ -2,9 +2,9 @@ import type { Beneficiary } from "@module/payment/client";
 
 import { loadBeneficiaries, payment } from "@/database/payment.ts";
 import { Controller } from "@/lib/controller.tsx";
-import { User } from "@/services/user.ts";
+import { auth } from "@/services/auth.ts";
 
-export class PaymentDashboardController extends Controller<{
+export class DashboardController extends Controller<{
   beneficiaries: Beneficiary[];
 }> {
   #subscriptions: any[] = [];
@@ -28,7 +28,7 @@ export class PaymentDashboardController extends Controller<{
     this.#subscriptions.push(
       await payment
         .collection("beneficiary")
-        .subscribe({ tenantId: await User.getTenantId() }, { sort: { label: 1 } }, (documents) => {
+        .subscribe({ tenantId: auth.user.tenant.id }, { sort: { label: 1 } }, (documents) => {
           this.setState("beneficiaries", documents);
         }),
     );

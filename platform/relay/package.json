@@ -12,6 +12,6 @@
     "@platform/socket": "workspace:*",
     "@platform/supertokens": "workspace:*",
     "path-to-regexp": "8",
-    "zod": "4.1.13"
+    "zod": "4.3.5"
   }
 }

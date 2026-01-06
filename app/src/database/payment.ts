@@ -1,43 +1,89 @@
-import type { Account, Beneficiary, Ledger, Transaction, Wallet } from "@module/payment/client";
-import { IndexedDatabase } from "@valkyr/db";
+import {
+  AccountSchema,
+  BeneficiarySchema,
+  LedgerSchema,
+  TransactionSchema,
+  WalletSchema,
+} from "@module/payment/client";
+import { IndexedDB } from "@valkyr/db";
 
 import { api } from "@/services/api.ts";
 
-export const payment = new IndexedDatabase<{
-  account: Account;
-  beneficiary: Beneficiary;
-  ledger: Ledger;
-  transaction: Transaction;
-  wallet: Wallet;
-}>({
+export const payment = new IndexedDB({
   name: "valkyr-sandbox:payment",
   registrars: [
     {
       name: "account",
-      indexes: [["_id", { unique: true }], ["walletId"]],
+      schema: AccountSchema.shape,
+      indexes: [
+        {
+          field: "_id",
+          kind: "primary",
+        },
+        {
+          field: "walletId",
+          kind: "shared",
+        },
+      ],
     },
     {
       name: "beneficiary",
-      indexes: [["_id", { unique: true }], ["tenantId"]],
+      schema: BeneficiarySchema.shape,
+      indexes: [
+        {
+          field: "_id",
+          kind: "primary",
+        },
+        {
+          field: "tenantId",
+          kind: "shared",
+        },
+      ],
     },
     {
       name: "ledger",
-      indexes: [["_id", { unique: true }], ["beneficiaryId"]],
+      schema: LedgerSchema.shape,
+      indexes: [
+        {
+          field: "_id",
+          kind: "primary",
+        },
+        {
+          field: "beneficiaryId",
+          kind: "shared",
+        },
+      ],
     },
     {
       name: "transaction",
-      indexes: [["_id", { unique: true }]],
+      schema: TransactionSchema.shape,
+      indexes: [
+        {
+          field: "_id",
+          kind: "primary",
+        },
+      ],
     },
     {
       name: "wallet",
-      indexes: [["_id", { unique: true }], ["ledgerId"]],
+      schema: WalletSchema.shape,
+      indexes: [
+        {
+          field: "_id",
+          kind: "primary",
+        },
+        {
+          field: "ledgerId",
+          kind: "shared",
+        },
+      ],
     },
-  ],
+  ] as const,
 });
 
 export async function loadBeneficiaries(): Promise<void> {
   const result = await api.payment.benficiaries.list();
   if ("data" in result) {
-    payment.collection("beneficiary").insertMany(result.data);
+    payment.collection("beneficiary").insert(result.data);
   }
 }

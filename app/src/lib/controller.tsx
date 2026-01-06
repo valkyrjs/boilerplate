@@ -50,7 +50,7 @@ export abstract class Controller<
       return;
     }
     const state = await this.onInit();
-    if (this.#destroyed === false) {
+    if (this.#destroyed === false && state !== undefined) {
       this.setState(state);
     }
     this.#initiated = true;
@@ -64,10 +64,7 @@ export abstract class Controller<
     if (this.onResolve === undefined) {
       return;
     }
-    const state: Partial<TState> = await this.onResolve();
-    if (this.#destroyed === false) {
-      this.setState({ ...this.state, ...state });
-    }
+    await this.onResolve();
   }
 
   async $destroy(): Promise<void> {
@@ -84,16 +81,12 @@ export abstract class Controller<
   /**
    * Called every time props change (including first mount).
    */
-  async onInit(): Promise<Partial<TState>> {
-    return {};
-  }
+  async onInit(): Promise<Partial<TState> | void> {}
 
   /**
    * Called every time props change (including first mount).
    */
-  async onResolve(): Promise<Partial<TState>> {
-    return {};
-  }
+  async onResolve(): Promise<void> {}
 
   /**
    * Called when the controller is destroyed.

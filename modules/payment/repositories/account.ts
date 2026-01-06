@@ -7,46 +7,71 @@ import { type Account, type AccountInsert, AccountInsertSchema, AccountSchema } 
  * Create a new account.
  *
  * @param values - Account values to insert.
+ *
+ * @returns Account _id
  */
 export async function createAccount(values: AccountInsert): Promise<string> {
   return db
     .begin(async () => {
       const _id = crypto.randomUUID();
 
-      // Assert wallet exists
+      // ### Assert Wallet
+      // Ensure that the wallet we are creating an account for exists.
+
       await db.sql`
         ASSERT EXISTS (
-          SELECT 1 
-          FROM payment.wallet w
-          WHERE w._id = ${db.text(values.walletId)}
-        ), 'missing_wallet';
+          SELECT 
+            1 
+          FROM 
+            payment.wallet wallet 
+          WHERE 
+            wallet._id = ${db.text(values.walletId)}
+        ),
+        'missing_wallet';
       `;
 
-      // Assert wallet → ledger relationship exists AND ledger exists
+      // ### Assert Wallet → Ledger
+      // Ensure that the wallet is related to a existing ledger.
+
       await db.sql`
         ASSERT EXISTS (
-          SELECT 1
-          FROM payment.wallet w
-          JOIN payment.ledger l ON l._id = w."ledgerId"
-          WHERE w._id = ${db.text(values.walletId)}
-        ), 'missing_ledger';
+          SELECT 
+            1
+          FROM 
+            payment.wallet wallet
+          JOIN 
+            payment.ledger ledger ON ledger._id = wallet."ledgerId"
+          WHERE 
+            wallet._id = ${db.text(values.walletId)}
+        ),
+        'missing_ledger';
       `;
 
-      // Assert ledger supports the currency
+      // ### Assert Currency
+      // Ensure that the account currency is supported by the ledger.
+
       await db.sql`
         ASSERT EXISTS (
-          SELECT 1
-          FROM payment.wallet w
-          JOIN payment.ledger l ON l._id = w."ledgerId"
-          WHERE w._id = ${db.text(values.walletId)}
-            AND ${db.text(values.currency)} IN (
+          SELECT 
+            1
+          FROM 
+            payment.wallet wallet
+          JOIN 
+            payment.ledger ledger ON ledger._id = wallet."ledgerId"
+          WHERE 
+            wallet._id = ${db.text(values.walletId)}
+          AND 
+            ${db.text(values.currency)} IN (
               SELECT
                 currency
               FROM
-                UNNEST(l.currencies) AS x(currency)
+                UNNEST(ledger.currencies) AS x(currency)
             )
-        ), 'unsupported_currency';
+        ),
+        'unsupported_currency';
       `;
+
+      // ### Create Account
 
       await db.sql`INSERT INTO payment.account RECORDS ${db.transit({ _id, ...AccountInsertSchema.parse(values) })}`;
 
@@ -71,6 +96,13 @@ export async function createAccount(values: AccountInsert): Promise<string> {
     });
 }
 
+/**
+ * Get all accounts registered for a wallet.
+ *
+ * @param walletId - Wallet to fetch accounts from.
+ *
+ * @returns List of wallet accounts
+ */
 export async function getAccountsByWalletId(walletId: string): Promise<Account[]> {
   return db.schema(AccountSchema).many`
     SELECT

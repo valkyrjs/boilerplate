@@ -7,13 +7,33 @@ import { type Wallet, type WalletInsert, WalletInsertSchema, WalletSchema } from
  * Create a new wallet.
  *
  * @param values - Wallet values to insert.
+ *
+ * @returns Wallet _id
  */
 export async function createWallet(values: WalletInsert): Promise<string> {
   return db
     .begin(async () => {
       const _id = crypto.randomUUID();
-      await db.sql`ASSERT EXISTS (SELECT 1 FROM payment.ledger WHERE _id = ${db.text(values.ledgerId)}), 'missing_ledger'`;
+
+      // ### Assert Ledger
+      // Ensure the ledger for the wallet exists.
+
+      await db.sql`
+        ASSERT EXISTS (
+          SELECT 
+            1 
+          FROM 
+            payment.ledger 
+          WHERE 
+            _id = ${db.text(values.ledgerId)}
+        ),
+        'missing_ledger'
+      `;
+
+      // ### Create Wallet
+
       await db.sql`INSERT INTO payment.wallet RECORDS ${db.transit({ _id, ...WalletInsertSchema.parse(values) })}`;
+
       return _id;
     })
     .catch((error) => {

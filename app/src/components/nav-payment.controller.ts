@@ -2,11 +2,10 @@ import type { Beneficiary } from "@module/payment/client";
 import { Book, CirclePlusIcon, type LucideIcon, SquareTerminal } from "lucide-react";
 import type { FunctionComponent } from "react";
 
+import { DialogCreateBeneficiary } from "@/components/beneficiary/create.component.tsx";
 import { loadBeneficiaries, payment } from "@/database/payment.ts";
 import { Controller } from "@/lib/controller.tsx";
-import { User } from "@/services/user.ts";
-
-import { DialogCreateBeneficiary } from "./payment/create-beneficiary.tsx";
+import { auth } from "@/services/auth.ts";
 
 export class NavPaymentController extends Controller<{
   items: MenuItem[];
@@ -19,7 +18,7 @@ export class NavPaymentController extends Controller<{
       items: [
         {
           title: "Dashboard",
-          url: "/payment",
+          url: "/",
           icon: SquareTerminal,
         },
       ],
@@ -31,7 +30,7 @@ export class NavPaymentController extends Controller<{
     this.#subscriptions.push(
       await payment
         .collection("beneficiary")
-        .subscribe({ tenantId: await User.getTenantId() }, { sort: { label: 1 } }, (beneficiaries) => {
+        .subscribe({ tenantId: auth.user.tenant.id }, { sort: { label: 1 } }, (beneficiaries) => {
           this.setState("items", this.#getMenuItems(beneficiaries));
         }),
     );
@@ -41,7 +40,7 @@ export class NavPaymentController extends Controller<{
     return [
       {
         title: "Dashboard",
-        url: "/payment",
+        url: "/",
         icon: SquareTerminal,
       },
       {
@@ -57,7 +56,7 @@ export class NavPaymentController extends Controller<{
           },
           ...beneficiaries.map((beneficiary) => ({
             title: beneficiary.label ?? "Unlabeled",
-            url: `/payment/${beneficiary._id}`,
+            url: `/beneficiaries/${beneficiary._id}`,
           })),
         ],
       },

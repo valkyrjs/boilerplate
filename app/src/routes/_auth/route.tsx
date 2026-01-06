@@ -1,10 +1,20 @@
-import { Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-export function AppView() {
+export const Route = createFileRoute("/_auth")({
+  beforeLoad: async ({ context: { auth } }) => {
+    await auth.resolve();
+    if (auth.isAuthenticated === false) {
+      throw auth.login();
+    }
+  },
+  component: AppLayout,
+});
+
+function AppLayout() {
   return (
     <SidebarProvider
       style={

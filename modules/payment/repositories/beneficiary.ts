@@ -56,6 +56,8 @@ export async function getBeneficiaryByTenantId(tenantId: string): Promise<Benefi
  * Get a beneficiary entity by provided id.
  *
  * @param id - Identity of the beneficiary to retrieve.
+ *
+ * @returns Beneficiary or undefined
  */
 export async function getBeneficiaryById(id: string): Promise<Beneficiary | undefined> {
   return db.schema(BeneficiarySchema).one`

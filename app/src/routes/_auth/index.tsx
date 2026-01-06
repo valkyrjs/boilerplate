@@ -1,8 +1,9 @@
+import { createFileRoute } from "@tanstack/react-router";
+
+import { DashboardController } from "@/controllers/dashboard.controller.ts";
 import { makeControllerComponent } from "@/lib/controller.tsx";
 
-import { PaymentDashboardController } from "./dashboard.controller.ts";
-
-export const PaymentDashboardView = makeControllerComponent(PaymentDashboardController, ({ beneficiaries }) => {
+const DashboardComponent = makeControllerComponent(DashboardController, ({ beneficiaries }) => {
   if (beneficiaries.length === 0) {
     return (
       <div className="w-full flex flex-col pt-20 items-center justify-center text-center">
@@ -19,4 +20,8 @@ export const PaymentDashboardView = makeControllerComponent(PaymentDashboardCont
       <pre>{JSON.stringify(beneficiaries, null, 2)}</pre>
     </div>
   );
+});
+
+export const Route = createFileRoute("/_auth/")({
+  component: DashboardComponent,
 });

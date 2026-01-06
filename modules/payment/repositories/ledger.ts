@@ -7,12 +7,31 @@ import { type Ledger, type LedgerInsert, LedgerSchema } from "../schemas/ledger.
  * Create a new ledger.
  *
  * @param values - Ledger values to insert.
+ *
+ * @returns Ledger _id
  */
 export async function createLedger(values: LedgerInsert): Promise<string> {
   return db
     .begin(async () => {
       const _id = crypto.randomUUID();
-      await db.sql`ASSERT EXISTS (SELECT 1 FROM payment.beneficiary WHERE _id = ${db.text(values.beneficiaryId)}), 'missing_beneficiary'`;
+
+      // ### Assert Beneficiary
+      // Ensure the beneficiary for the ledger exists.
+
+      await db.sql`
+        ASSERT EXISTS (
+          SELECT 
+            1 
+          FROM 
+            payment.beneficiary 
+          WHERE 
+            _id = ${db.text(values.beneficiaryId)}
+        ), 
+        'missing_beneficiary'
+      `;
+
+      // ### Create Ledger
+
       await db.sql`
         INSERT INTO payment.ledger (
           _id,
@@ -26,6 +45,7 @@ export async function createLedger(values: LedgerInsert): Promise<string> {
           ${values.label ? db.text(values.label) : null}
         )
       `;
+
       return _id;
     })
     .catch((error) => {

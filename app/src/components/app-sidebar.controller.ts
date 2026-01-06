@@ -1,7 +1,7 @@
 import { GalleryVerticalEnd } from "lucide-react";
 
 import { Controller } from "@/lib/controller.tsx";
-import { User } from "@/services/user.ts";
+import { auth } from "@/services/auth.ts";
 
 type Tenant = {
   name: string;
@@ -13,7 +13,7 @@ export class AppSiderbarController extends Controller<{
   tenant: Tenant;
 }> {
   async onInit() {
-    const user = await User.resolve();
+    const user = auth.user;
     if (user === undefined) {
       return {
         tenant: {

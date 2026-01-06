@@ -3,14 +3,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { ThemeProvider } from "@/components/theme-provider.tsx";
-import { router } from "@/lib/router.tsx";
-import "./index.css";
+import { router } from "@/lib/router";
 
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
+import "./index.css";
 
 const rootElement = document.getElementById("root");
 if (rootElement === null) {

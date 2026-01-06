@@ -1,4 +1,3 @@
-import { redirect } from "@tanstack/react-router";
 import z from "zod";
 
 import { type ZitadelUser, zitadel } from "./zitadel.ts";
@@ -35,20 +34,23 @@ export class User {
     this.tenant = tenant;
   }
 
-  static async getTenantId() {
-    return User.get().then((user) => user.tenant.id);
+  static get isAuthenticated() {
+    return cached !== undefined;
   }
 
-  static async getTenantName() {
-    return User.get().then((user) => user.tenant.name);
-  }
-
-  static async get() {
-    const user = await User.resolve();
-    if (user === undefined) {
-      throw redirect({ to: "/login" });
+  static get instance() {
+    if (cached === undefined) {
+      throw zitadel.authorize();
     }
-    return user;
+    return cached;
+  }
+
+  static get tenantId() {
+    return User.instance.tenant.id;
+  }
+
+  static get tenantName() {
+    return User.instance.tenant.name;
   }
 
   static async resolve() {

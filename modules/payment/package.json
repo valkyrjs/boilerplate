@@ -12,6 +12,6 @@
     "@platform/database": "workspace:*",
     "@platform/parse": "workspace:*",
     "@platform/relay": "workspace:*",
-    "zod": "4.1.13"
+    "zod": "4.3.5"
   }
 }
