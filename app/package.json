@@ -34,7 +34,7 @@
     "@tailwindcss/vite": "4.1.17",
     "@tanstack/react-router": "1.139.9",
     "@tanstack/react-table": "8.21.3",
-    "@valkyr/db": "npm:@jsr/valkyr__db@3.0.1",
+    "@valkyr/db": "npm:@jsr/valkyr__db@3.0.2",
     "@zitadel/react": "1.1.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",

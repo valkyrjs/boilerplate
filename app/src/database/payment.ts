@@ -82,8 +82,20 @@ export const payment = new IndexedDB({
 });
 
 export async function loadBeneficiaries(): Promise<void> {
+  if (hasCacheKey("beneficiaries")) {
+    return; // don't re-fetch the same key
+  }
+  setCacheKey("beneficiaries");
   const result = await api.payment.benficiaries.list();
   if ("data" in result) {
     payment.collection("beneficiary").insert(result.data);
   }
+}
+
+function hasCacheKey(key: string): boolean {
+  return localStorage.getItem(key) !== null;
+}
+
+function setCacheKey(key: string): void {
+  localStorage.setItem(key, "cached");
 }
