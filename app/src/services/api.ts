@@ -1,4 +1,3 @@
-import { account } from "@module/account/client";
 import { payment } from "@module/payment/client";
 import { HttpAdapter, makeClient, type RelayResponse } from "@platform/relay";
 
@@ -9,7 +8,6 @@ export const api = makeClient(
     }),
   },
   {
-    account,
     payment,
   },
 );

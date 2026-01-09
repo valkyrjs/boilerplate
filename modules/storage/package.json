@@ -1,0 +1,17 @@
+{
+  "name": "@module/storage",
+  "description": "Handles storage, consumption and management of files.",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": "./entrypoints/server.ts",
+    "./client": "./entrypoints/client.ts"
+  },
+  "dependencies": {
+    "@platform/database": "workspace:*",
+    "@platform/parse": "workspace:*",
+    "@platform/relay": "workspace:*",
+    "zod": "4.3.5"
+  }
+}

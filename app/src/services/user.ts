@@ -73,7 +73,12 @@ export class User {
 }
 
 function getUserProfile({ profile }: ZitadelUser): Profile {
-  const user: Profile = { id: profile.client_id as string, name: "Unknown", email: "unknown@acme.none", avatar: "" };
+  const user: Profile = {
+    id: profile.client_id as string,
+    name: "Unknown",
+    email: "unknown@acme.none",
+    avatar: "",
+  };
   if (profile.name) {
     user.name = profile.name;
   } else if (profile.given_name && profile.family_name) {
@@ -87,7 +92,7 @@ function getUserProfile({ profile }: ZitadelUser): Profile {
   if (profile.picture !== undefined) {
     user.avatar = profile.picture;
   }
-  return user;
+  return ProfileSchema.parse(user);
 }
 
 type Tenant = z.output<typeof TenantSchema>;

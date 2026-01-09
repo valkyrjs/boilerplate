@@ -23,6 +23,8 @@ export class DashboardController extends Controller<{
     }
   }
 
+  async createUser() {}
+
   async #subscribe() {
     await loadBeneficiaries();
     this.#subscriptions.push(
