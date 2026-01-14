@@ -3971,13 +3971,6 @@
           ]
         }
       },
-      "modules/account": {
-        "packageJson": {
-          "dependencies": [
-            "npm:zod@4.3.5"
-          ]
-        }
-      },
       "modules/payment": {
         "packageJson": {
           "dependencies": [
@@ -3985,7 +3978,7 @@
           ]
         }
       },
-      "modules/tenant": {
+      "modules/storage": {
         "packageJson": {
           "dependencies": [
             "npm:zod@4.3.5"
