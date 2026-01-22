@@ -28,6 +28,7 @@ const MIME_MAP = {
  | such as the MIME type.
  |
  */
+
 const RawImageSchema = z.strictObject({
   _id: z.uuid().describe("Primary identifier of the image"),
 
@@ -59,6 +60,7 @@ const RawImageSchema = z.strictObject({
  | format. No extra keys are permitted.
  |
  */
+
 export const ImageSchema = RawImageSchema.transform((data) => ({
   ...data,
   mime: mimeForFormat(data.format),

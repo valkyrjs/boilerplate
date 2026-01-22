@@ -4,7 +4,6 @@
   "workspace": [
     "api",
     "app",
-    "desktop",
     "modules/payment",
     "modules/storage",
     "platform/cerbos",
@@ -28,9 +27,6 @@
     "app": {
       "command": "cd ./app && deno run dev",
       "description": "Start app client instance."
-    },
-    "desktop": {
-      "command": "cd ./desktop && deno task tauri dev"
     },
     "check": {
       "command": "deno run -A npm:@biomejs/biome check --write ./api ./apps/react/src ./modules ./platform",
